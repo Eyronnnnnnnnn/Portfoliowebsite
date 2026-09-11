@@ -1,0 +1,10 @@
+{
+  "description": "Showcase your work with a sleek, minimalist single-page portfolio website designed for creatives seeking a modern and elegant online presence.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
