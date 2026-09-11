@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import profilePhoto from "@/imports/image.png";
+import profilePhoto from "./imports/image.png";
 
 const DARK = {
   bg: "#050505",
@@ -1028,8 +1028,8 @@ export default function App() {
               <p className="text-[10px] font-mono mb-2" style={{ color: T.muted }}>07 — CONTACT</p>
               <h2 className="text-xl sm:text-2xl font-bold">Let's connect.</h2>
               <p className="text-xs mt-2 mb-5" style={{ color: T.muted }}>Open for software roles and projects.</p>
-              <a href="mailto:aaron@example.com" className="inline-block px-6 py-2.5 rounded-full text-xs font-medium text-white" style={{ backgroundColor: T.accent }}>
-                aaron@example.com →
+              <a href="mailto:aarondev@gmail.com" className="inline-block px-6 py-2.5 rounded-full text-xs font-medium text-white" style={{ backgroundColor: T.accent }}>
+                aarondev@gmail.com →
               </a>
             </section>
 
