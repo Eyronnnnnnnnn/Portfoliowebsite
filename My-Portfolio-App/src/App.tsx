@@ -250,6 +250,68 @@ function GithubMark({ size = 12, color = "currentColor" }: { size?: number; colo
 }
 
 // ---------------------------------------------------------------------------
+// A tiny stick-figure doodle sitting cross-legged on top of the letter,
+// sipping coffee held up near its head, with a gently pulsing speech-bubble
+// quote. Purely decorative monoline SVG so it reads well in both themes.
+// ---------------------------------------------------------------------------
+function CoffeeDoodle({ T }: { T: Theme }) {
+  return (
+    <div
+      className="absolute left-1/2 -translate-x-1/2 pointer-events-none select-none"
+      style={{ bottom: "0.55em", width: "2.6em", height: "2.95em" }}
+      aria-hidden="true"
+    >
+      <svg width="100%" height="100%" viewBox="0 0 76 86" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <style>{`
+          .coffee-bubble {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: coffeeBubblePop 2.4s ease-in-out infinite;
+          }
+          @keyframes coffeeBubblePop {
+            0%, 100% { transform: scale(1) translateY(0); }
+            50% { transform: scale(1.08) translateY(-2px); }
+          }
+        `}</style>
+
+        {/* speech bubble — gently pulses to draw the eye */}
+        <g className="coffee-bubble">
+          <rect x="4" y="0" width="58" height="24" rx="10" fill={T.bg} stroke={T.text} strokeWidth="1.4" />
+          <path d="M22 24 L16 33 L30 24 Z" fill={T.bg} stroke={T.text} strokeWidth="1.4" strokeLinejoin="round" />
+          <text x="33" y="10.5" textAnchor="middle" fontSize="7.5" fontFamily="'Inter', system-ui, sans-serif" fontWeight="600" fill={T.text}>
+            Let's drink
+          </text>
+          <text x="33" y="19.5" textAnchor="middle" fontSize="7.5" fontFamily="'Inter', system-ui, sans-serif" fontWeight="600" fill={T.text}>
+            a coffee ☕
+          </text>
+        </g>
+
+        {/* head */}
+        <circle cx="37" cy="42" r="5" fill="none" stroke={T.text} strokeWidth="1.6" />
+        {/* torso */}
+        <line x1="37" y1="47" x2="37" y2="51" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        {/* arm raising the cup up beside the head */}
+        <line x1="37" y1="48" x2="45" y2="39" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        {/* other arm bracing against the leg */}
+        <line x1="37" y1="48" x2="29" y2="55" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        {/* legs, spread wide in a cross-legged seated pose straddling the letter */}
+        <line x1="37" y1="51" x2="23" y2="68" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="37" y1="51" x2="51" y2="68" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="23" y1="68" x2="33" y2="63" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="51" y1="68" x2="41" y2="63" stroke={T.text} strokeWidth="1.6" strokeLinecap="round" />
+
+        {/* coffee cup, held up near the head */}
+        <rect x="42" y="33" width="7" height="7" rx="1.4" fill="none" stroke={T.text} strokeWidth="1.3" />
+        <path d="M49 34.5c1.7 0 1.7 3.5 0 3.5" stroke={T.text} strokeWidth="1.1" fill="none" />
+        {/* steam wisps */}
+        <path d="M43.5 32c0-1.4 1.6-1.4 1.6-2.8s-1.6-1.4-1.6-2.8" stroke={T.text} strokeWidth="1.1" strokeLinecap="round" fill="none" opacity="0.6" />
+        <path d="M47 32c0-1.4 1.6-1.4 1.6-2.8s-1.6-1.4-1.6-2.8" stroke={T.text} strokeWidth="1.1" strokeLinecap="round" fill="none" opacity="0.6" />
+      </svg>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Real GitHub contribution grid. Pulls actual calendar data from a public
 // GitHub-contributions API (github-contributions-api.jogruber.de) — same
 // data source GitHub itself shows on a profile page — and falls back to a
@@ -692,6 +754,7 @@ export default function App() {
   const [scrollY, setScrollY] = useState(0);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [page, setPage] = useState<Page>("home");
+  const [imgError, setImgError] = useState(false);
   const T = dark ? DARK : LIGHT;
   const projects = useMemo(() => PROJECTS[year] ?? [], [year]);
 
@@ -858,18 +921,36 @@ export default function App() {
               <div className="relative z-10 flex flex-col items-center text-center">
                 <div className="relative mb-5">
                   <div
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border shadow-2xl cursor-pointer click-active"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border shadow-2xl cursor-pointer click-active flex items-center justify-center"
                     onClick={() => playIosClickSound()}
-                    style={{ borderColor: T.glassBorder }}
+                    style={{
+                      borderColor: T.glassBorder,
+                      background: imgError ? "linear-gradient(135deg, #2997ff, #BF5AF2)" : undefined,
+                    }}
                   >
-                    <img src={profilePhoto} alt="Aaron" className="w-full h-full object-cover" />
+                    {imgError ? (
+                      <span className="text-2xl font-bold text-white select-none">AG</span>
+                    ) : (
+                      <img
+                        src={profilePhoto}
+                        alt="Aaron"
+                        className="w-full h-full object-cover"
+                        onError={() => setImgError(true)}
+                      />
+                    )}
                   </div>
                 </div>
 
                 <p className="text-[10px] font-mono tracking-widest uppercase mb-2" style={{ color: T.muted }}>
                   Software · Systems · Design
                 </p>
-                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">Aaron D Guillermo</h1>
+                <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
+                  Aaron D Guillerm
+                  <span className="relative inline-block">
+                    o
+                    <CoffeeDoodle T={T} />
+                  </span>
+                </h1>
                 <p className="mt-3 text-xs sm:text-sm max-w-md leading-relaxed" style={{ color: T.muted }}>
                   Full Stack Developer building high-performance web systems and minimal user interfaces.
                 </p>
@@ -986,7 +1067,7 @@ export default function App() {
             {/* Skills */}
             <section style={bubble(T)} className="p-6">
               <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>05 — SKILLS</p>
-              <div className="flex flex-wrap gap-4">
+              <div className="flex flex-wrap gap-4 justify-center">
                 {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} dark={dark} />)}
               </div>
             </section>
