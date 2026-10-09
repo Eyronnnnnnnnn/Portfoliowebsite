@@ -590,7 +590,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <p className="text-[10px] font-mono tracking-widest uppercase mb-2" style={{ color: T.muted }}>
+                <p className="text-[20px] font-mono tracking-widest uppercase mb-2" style={{ color: T.muted }}>
                   Full Stack Developer | Software Engineer | Generative AI
                 </p>
                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
