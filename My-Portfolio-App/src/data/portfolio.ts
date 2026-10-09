@@ -8,7 +8,7 @@ export const PROJECTS: Record<number, { id: number; title: string; desc: string;
     id: 1,
     title: "Chaindaan",
     desc: "An ongoing academic project where I apply and develop my software development skills as a BSIT student.",
-    tags: ["Academic Project", "In Development"],
+    tags: [  "React.js","Node.js","Express.js","MongoDb","Cloudinary","Socket Io", "Software Engineering",  "In Development"],
   },
 ],
 };
