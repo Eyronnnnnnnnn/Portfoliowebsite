@@ -1,15 +1,17 @@
-# Portfolio source
+﻿# Portfolio source
 
-- `App.tsx`: page composition, theme, project filtering, and expandable credentials.
-- `components/`: contribution calendar, decorative robot companions, and project cards.
-- `hooks/useContributions.ts`: live activity request, validation, timeout, retry, and cleanup.
-- `data/portfolio.ts`: editable projects, experience, education, credentials, skills, and GitHub username.
-- `assets/photos/profile.png`: your profile photo. Replace this file to change the portrait.
-- `index.css`: shared design tokens, layout, responsive styling, and reduced-motion rules.
-- `imports/`: retained original image assets.
+The original centered profile, floating navigation, glass cards, ambient gradients, and subpages are preserved.
 
-The calendar fits its container without horizontal scrolling. It displays actual API results and an explicit unavailable state if the request fails. Its slider provides keyboard and touch access to individual dates.
+- `App.tsx`: original page layout, navigation, and section composition.
+- `components/ContributionGraph.tsx`: responsive monochrome activity dots, with no horizontal scroll.
+- `components/PremiumRobot.tsx` and `PremiumDrone.tsx`: original animated companions with refined materials.
+- `hooks/useContributions.ts`: real GitHub activity, response validation, timeout, and retry.
+- `data/portfolio.ts`: editable projects, experience, education, certificates, and skills.
+- `theme/palette.ts`: original light and dark palettes.
+- `assets/photos/profile.png`: replace this image with your portrait, keeping the filename.
+- `index.css`: shared font and responsive refinements.
+- `imports/`: retained original images.
 
-Project illustrations are decorative, not application screenshots. Existing project, experience, and certificate content was retained; verify it before publishing. Education placeholder program/dates are excluded from the rendered page until filled in.
+The graph only displays real API data. It shows an unavailable message if the request fails, rather than generating contributions.
 
-From the project root, run `npm run build` for a production build and `npx tsc --noEmit` for TypeScript validation.
+Run `npm run build` and `npx tsc --noEmit` from the project root to validate changes.
