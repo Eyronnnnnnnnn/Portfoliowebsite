@@ -1,0 +1,4 @@
+import { PROJECTS } from "../data/portfolio";
+export default function ProjectCard({ project, index }: { project: (typeof PROJECTS)[number][number]; index: number }) {
+  return <article className="project-card"><div className={`project-art project-art-${index % 3}`} aria-hidden="true"><div className="mini-window"><div className="mini-toolbar"><i/><i/><i/></div><div className="mini-content"><div className="mini-sidebar"/><div className="mini-chart">{[35,60,45,78,64,92,80].map((height, i) => <i key={i} style={{ height: `${height}%` }}/>)}</div></div></div><span className="project-number">0{index + 1} / SELECTED WORK</span></div><div className="project-copy"><h3>{project.title}</h3><p>{project.desc}</p><div className="tags">{project.tags.map(tag => <span key={tag}>{tag}</span>)}</div></div></article>;
+}
