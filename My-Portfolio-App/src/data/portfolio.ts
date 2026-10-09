@@ -14,8 +14,12 @@ export const PROJECTS: Record<number, { id: number; title: string; desc: string;
 };
 
 export const EXPERIENCE = [
-  { role: "Full Stack Developer", company: "Freelance / Remote", period: "2024 — Present", desc: "Building production-ready web and mobile apps. Specializing in React, Node.js, and cloud systems." },
-  { role: "Junior Software Engineer", company: "TechBridge PH", period: "2023 — 2024", desc: "Developed internal dashboards and APIs. Migrated legacy codebases to Next.js + PostgreSQL." },
+  {
+    role: "Full Stack Developer (Sole Developer)",
+    company: "Chain-Daan | Academic Software Engineering Project",
+    period: "2026 — Present",
+    desc: "Developing Chain-Daan as the sole developer within a five-member BSIT team, handling both frontend and backend implementation.",
+  },
 ];
 
 // NOTE: placeholder degree/period for MMSU — update with your actual program and dates.
@@ -32,8 +36,8 @@ export const CERTS = [
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
   {
-    name: "",
-    issuer: "DataCamp",
+    name: "Introduction to AI Literacy and Responsible Use",
+    issuer: "Commission on Higher Education (CHED) Bagong Pilipinas (ACHIEVE program) Mapúa University",
     year: "2025",
     color: "#f5a623",
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
