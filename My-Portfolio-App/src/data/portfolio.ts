@@ -24,10 +24,31 @@ export const EXPERIENCE = [
 
 // NOTE: placeholder degree/period for MMSU — update with your actual program and dates.
 export const EDUCATION = [
-  { degree: "Add your program here", school: "Mariano Marcos State University", period: "20XX — 20XX", note: "Add honors / note", logo: "mmsu" as const },
+  { degree: "Bachelor of Science in Information Technology", school: "Mariano Marcos State University", period: "Graduating in 2028", note: "1st Year College Schoolar", logo: "mmsu" as const },
 ];
 
 export const CERTS = [
+  {
+    name: "Associate AI Engineer for Developers",
+    issuer: "DataCamp",
+    year: "2025",
+    color: "#f5a623",
+   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
+  },
+  {
+    name: "",
+    issuer: "DataCamp",
+    year: "2025",
+    color: "#f5a623",
+   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
+  },
+  {
+    name: "Associate AI Engineer for Developers",
+    issuer: "DataCamp",
+    year: "2025",
+    color: "#f5a623",
+   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
+  },
   {
     name: "Associate AI Engineer for Developers",
     issuer: "DataCamp",
