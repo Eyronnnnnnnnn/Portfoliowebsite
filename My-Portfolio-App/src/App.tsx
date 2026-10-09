@@ -579,7 +579,7 @@ export default function App() {
                 <div className="relative mb-5">
                  {/* for profile photo div */}
                   <div
-                    className="w-35 h-35 sm:w-28 sm:h-28 rounded-3xl overflow-hidden border shadow-2xl cursor-pointer click-active flex items-center justify-center"
+                    className="w-28 h-28 sm:w-32 sm:h-32 rounded-3xl overflow-hidden border shadow-2xl cursor-pointer click-active flex items-center justify-center"
                     onClick={() => playIosClickSound()}
                     style={{
                       borderColor: T.glassBorder,
