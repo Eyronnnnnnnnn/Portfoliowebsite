@@ -7,8 +7,8 @@ export default function ProfilePhoto() {
     <img
       src={profilePhoto}
       alt="Aaron D Guillermo"
-      width={112}
-      height={112}
+      width={142}
+      height={142}
       className="w-full h-full object-cover"
       fetchPriority="high"
       decoding="async"
