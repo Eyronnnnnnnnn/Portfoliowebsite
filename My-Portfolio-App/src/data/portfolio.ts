@@ -25,7 +25,7 @@ export const EXPERIENCE = [
 // NOTE: placeholder degree/period for MMSU — update with your actual program and dates.
 export const EDUCATION = [
   { degree: "Bachelor of Science in Information Technology", school: "Mariano Marcos State University", period: "Graduating in 2028", note: "1st Year College Schoolar", logo: "mmsu" as const },
-  { degree: "(STEM)Science Technology Engineering and Mathemathics", school: "Catagtaguen National Highschool", period: "Graduated 2024", note: "Honnor Student", logo: "mmsu" as const },
+  { degree: "(STEM)Science Technology Engineering and Mathemathics", school: "Catagtaguen National Highschool", period: "Graduated 2024", note: "Honor Student", logo: "mmsu" as const },
   { degree: "Junior Highschool", school: "Catagtaguen National Highschool", period: "Graduated 2022", note: "", logo: "mmsu" as const },
   { degree: "Elementary", school: "Macayepyep Elementary school", period: "Grade 6", note: "Grade 6 Graduated", logo: "mmsu" as const },
   { degree: "Elementary", school: "R and O Academy", period: "Grade 1-5", note: "", logo: "mmsu" as const },
