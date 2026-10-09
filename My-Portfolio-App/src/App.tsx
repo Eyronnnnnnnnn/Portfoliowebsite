@@ -597,7 +597,7 @@ export default function App() {
                   Aaron D Guillermo
                 </h1>
                 <p className="mt-3 text-xs sm:text-sm max-w-md leading-relaxed" style={{ color: T.muted }}>
-                  Full Stack Developer building high-performance web systems and minimal user interfaces.
+                  Full Stack Software Engineer crafting scalable web applications, integrating generative AI, and designing seamless user experiences.
                 </p>
 
                 <div className="flex gap-3 mt-6">
