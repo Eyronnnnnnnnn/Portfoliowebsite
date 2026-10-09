@@ -1,0 +1,6 @@
+# Ship portfolio photos as regular Git blobs so deployments receive image bytes.
+*.png -filter -diff -merge -text
+*.jpg -filter -diff -merge -text
+*.jpeg -filter -diff -merge -text
+*.webp -filter -diff -merge -text
+*.avif -filter -diff -merge -text

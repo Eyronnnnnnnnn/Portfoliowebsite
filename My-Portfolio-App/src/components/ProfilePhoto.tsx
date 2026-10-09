@@ -1,7 +1,7 @@
-﻿import profilePhoto from "../assets/photos/profile.png?inline";
+﻿import profilePhoto from "../assets/photos/profile.png";
 
-// Keep the portrait in the image element and bundle its bytes with the app.
-// This avoids preview asset-path failures and a sticky initials-only error state.
+// Photos are stored as regular Git files; Vite emits the portrait as an image asset.
+
 export default function ProfilePhoto() {
   return (
     <img
