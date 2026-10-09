@@ -591,7 +591,7 @@ export default function App() {
                 </div>
 
                 <p className="text-[10px] font-mono tracking-widest uppercase mb-2" style={{ color: T.muted }}>
-                  Software · Systems · Design
+                  Full Stack Developer | Software Engineer | Generative AI
                 </p>
                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
                   Aaron D Guillermo
