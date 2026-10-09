@@ -29,19 +29,13 @@ export const EDUCATION = [
 
 export const CERTS = [
   {
-    name: "AWS Certified Developer",
-    issuer: "Amazon Web Services",
+    name: "Associate AI Engineer for Developers",
+    issuer: "DataCamp",
     year: "2025",
     color: "#f5a623",
-    desc: "Validated skills in building and maintaining applications on AWS — core services, deployment pipelines, and security fundamentals.",
+   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
-  {
-    name: "Meta Front-End Developer",
-    issuer: "Meta / Coursera",
-    year: "2024",
-    color: "#2997ff",
-    desc: "Professional certificate covering React, responsive UI development, and modern front-end engineering practice.",
-  },
+ 
 ];
 
 export type Skill = { name: string; src?: string; custom?: "sql" | "nosql"; invertOnDark?: boolean };
