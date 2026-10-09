@@ -15,10 +15,10 @@ export const PROJECTS: Record<number, { id: number; title: string; desc: string;
 
 export const EXPERIENCE = [
   {
-    role: "Full Stack Developer (Sole Developer)",
+    role: "Full Stack Developer (Solo Developer)",
     company: "Chain-Daan | Academic Software Engineering Project",
     period: "2026 — Present",
-    desc: "Developing Chain-Daan as the sole developer within a five-member BSIT team, handling both frontend and backend implementation.",
+    desc: "Driving the full-stack development of Chain-Daan as the solo developer in a five-member BSIT team, translating project requirements into an integrated application across the frontend and backend.",
   },
 ];
 
@@ -31,31 +31,18 @@ export const CERTS = [
   {
     name: "Associate AI Engineer for Developers",
     issuer: "DataCamp",
-    year: "2025",
+    year: "2026",
     color: "#f5a623",
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
   {
     name: "Introduction to AI Literacy and Responsible Use",
-    issuer: "Commission on Higher Education (CHED) Bagong Pilipinas (ACHIEVE program) Mapúa University",
-    year: "2025",
+    issuer: "Commission on Higher Education (CHED) Bagong Pilipinas (ACHIEVE program) Mapúa University(MAPUA)",
+    year: "2026",
     color: "#f5a623",
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
-  {
-    name: "Associate AI Engineer for Developers",
-    issuer: "DataCamp",
-    year: "2025",
-    color: "#f5a623",
-   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
-  },
-  {
-    name: "Associate AI Engineer for Developers",
-    issuer: "DataCamp",
-    year: "2025",
-    color: "#f5a623",
-   desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
-  },
+
  
 ];
 

@@ -653,7 +653,7 @@ export default function App() {
                   <span className="text-[10px]" style={{ color: T.muted }}>Read the story →</span>
                 </div>
                 <p className="text-xs sm:text-sm font-light leading-relaxed" style={{ color: T.text }}>
-                  Junior Full Stack Developer based in Metro Manila. Focused on React, Next.js, Node.js, and cloud platforms.
+                 Third-year BSIT student at Mariano Marcos State University (Ilocos Norte), with a strong interest in full-stack development and generative AI. Focused on building practical web applications, creating intuitive user experiences, and exploring AI-powered solutions.
                 </p>
               </section>
             </div>
