@@ -329,7 +329,7 @@ function AllCertificationsPage({ T }: { T: Theme }) {
             <button onClick={() => setSelected(c)} aria-label={`View ${c.name} certificate`} className="block w-full aspect-[4/3] overflow-hidden rounded-2xl border mb-5 hover:opacity-80 transition-opacity" style={{ borderColor: T.glassBorder }}><CertificateImage certificate={c} T={T} /></button>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.color }} />
+                <img src={c.logo} alt={c.logoAlt} className="w-8 h-8 shrink-0 rounded-lg object-contain bg-white p-1" />
                 <h3 className="text-sm font-semibold">{c.name}</h3>
               </div>
               <span className="text-[10px] font-mono" style={{ color: T.muted }}>{c.year}</span>
@@ -371,7 +371,7 @@ function AboutStoryPage({ T }: { T: Theme }) {
 }
 
 export default function App() {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [year, setYear] = useState(2026);
   const [scrollY, setScrollY] = useState(0);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
@@ -616,7 +616,7 @@ export default function App() {
               </div>
               <section className="app-builder-card relative flex flex-col p-6 rounded-[26px] overflow-hidden min-h-64">
                 <h2 className="relative text-[10px] font-mono tracking-wider">03 — APP BUILDER</h2>
-                <div className="relative flex flex-1 items-center py-6">
+                <div className="relative flex items-start pt-5">
                   <a href="https://appbuildersph.com/apps/chaindaan" target="_blank" rel="noopener noreferrer" aria-label="View ChainDaan on App Builders PH" className="app-builder-item relative flex w-full min-w-0 items-center gap-3 rounded-2xl px-4 py-3.5 overflow-hidden">
                     <img src={chaindaanLogo} alt="ChainDaan logo" className="relative w-10 h-10 shrink-0 rounded-xl border border-white/15 shadow-sm" />
                     <span className="relative flex min-w-0 flex-1 flex-col gap-1">

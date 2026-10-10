@@ -4,6 +4,8 @@ import chaindaanCover from "../assets/chaindaan-cover.svg";
 import chaindaanLogo from "../assets/photos/ChainDaan-logo/chaindaan.logo.png";
 import aiLiteracyCertificate from "../assets/photos/Certifications/introduction to Ai literacy Certificate.png";
 import aiEngineerCertificate from "../assets/photos/Certifications/AI ENGINEER FOR DEVELOPERS ASSOCIATE.png";
+import datacampLogo from "../assets/photos/Certifications/datacamp-logo.svg";
+import mapuaLogo from "../assets/photos/Certifications/mapua-logo.png";
 export const YEARS = [2026, 2025, 2024];
 const DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
 export type Project = { id: number; title: string; desc: string; tags: string[]; image: string; icon?: string; role?: string; details?: string; status?: string };
@@ -41,7 +43,7 @@ export const EDUCATION = [
   { degree: "Elementary", school: "R and O Academy", period: "Grade 1-5", note: "", logo: "generic" as const },
 ];
 
-export type Certificate = { name: string; issuer: string; year: string; color: string; desc: string; image?: string };
+export type Certificate = { name: string; issuer: string; year: string; logo: string; logoAlt: string; desc: string; image?: string };
 // Set image to the certificate image URL or an imported local asset.
 export const CERTS: Certificate[] = [
   {
@@ -49,7 +51,8 @@ export const CERTS: Certificate[] = [
     image: aiEngineerCertificate,
     issuer: "DataCamp",
     year: "2026",
-    color: "#f5a623",
+    logo: datacampLogo,
+    logoAlt: "DataCamp logo",
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
   {
@@ -57,7 +60,8 @@ export const CERTS: Certificate[] = [
     image: aiLiteracyCertificate,
     issuer: "Commission on Higher Education (CHED) Bagong Pilipinas (ACHIEVE program) Mapúa University(MAPUA)",
     year: "2026",
-    color: "#f5a623",
+    logo: mapuaLogo,
+    logoAlt: "Mapúa University logo",
    desc: "Developed skills in integrating generative AI into software applications, including working with large language models, prompt engineering, and building AI-powered solutions.",
   },
 

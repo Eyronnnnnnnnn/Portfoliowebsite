@@ -55,7 +55,7 @@ export default function GithubDotContribution({
             <div
               className="contribution-dots"
               role="img"
-              aria-label={`${total} contributions across ${days.length} days. Use the date slider to explore.`}
+              aria-label={`${total} contributions across ${days.length} days.`}
             >
               {days.map((day, index) => (
                 <span
@@ -92,26 +92,6 @@ export default function GithubDotContribution({
                 More
               </span>
             </div>
-            <label
-              className="mt-2 flex items-center gap-2 text-[10px]"
-              style={{ color: T.muted }}
-            >
-              Explore a day
-              <input
-                className="w-24 h-3"
-                style={{ accentColor: T.accent }}
-                type="range"
-                min="0"
-                max={Math.max(0, days.length - 1)}
-                value={selected ?? Math.max(0, days.length - 1)}
-                aria-valuetext={
-                  active
-                    ? `${active.date}: ${active.count} contributions`
-                    : "Choose a date"
-                }
-                onChange={(event) => setSelected(Number(event.target.value))}
-              />
-            </label>
           </>
         ) : (
           <div
