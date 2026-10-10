@@ -1,120 +1,103 @@
-﻿import { useState } from "react";
+﻿import { useId, useRef, useState } from "react";
 import useContributions from "../hooks/useContributions";
 import { GITHUB_URL, GITHUB_USERNAME } from "../data/portfolio";
-import type { Theme } from "../theme/palette";
 
-export default function GithubDotContribution({
-  dark,
-  T,
-}: {
-  dark: boolean;
-  T: Theme;
-}) {
+const dotSizes = [2, 4, 6, 9, 12];
+const dotColors = ["#262629", "#606064", "#8A8A8E", "#B6B6BA", "#DEDEE0"];
+// Stable count thresholds keep the same activity looking the same across dates.
+const activityLevel = (count: number) =>
+  count === 0 ? 0 : count <= 3 ? 1 : count <= 6 ? 2 : count <= 9 ? 3 : 4;
+
+export default function GithubDotContribution() {
   const { days, status, retry } = useContributions();
   const [selected, setSelected] = useState<number | null>(null);
+  const [focusIndex, setFocusIndex] = useState(0);
+  const [tooltipLeft, setTooltipLeft] = useState(0);
+  const container = useRef<HTMLDivElement>(null);
+  const cells = useRef<(HTMLButtonElement | null)[]>([]);
+  const tooltipId = useId();
   const total = days.reduce((sum, day) => sum + day.count, 0);
   const active = selected === null ? null : days[selected];
-  const colors = dark
-    ? ["#34343c", "#656571", "#9696a3", "#c8c8d3", "#ffffff"]
-    : ["#d0d0d8", "#aaaab8", "#7c7c8f", "#505064", "#252534"];
+  const firstDate = days.length ? Date.parse(`${days[0].date}T00:00:00Z`) : 0;
+  const weekdayOffset = new Date(firstDate).getUTCDay();
+
+  function showTooltip(index: number, cell: HTMLButtonElement) {
+    const bounds = container.current?.getBoundingClientRect();
+    if (bounds) {
+      const center = cell.getBoundingClientRect().left + 7.5 - bounds.left;
+      setTooltipLeft(Math.max(0, Math.min(center - 120, bounds.width - 240)));
+    }
+    setSelected(index);
+  }
+
   return (
-    <div
-      className="contribution-calendar w-full flex flex-col gap-3"
-      style={{ color: T.text }}
-    >
-      <div className="flex items-center justify-between gap-3 flex-wrap text-xs font-mono px-1">
-        <div className="flex items-center gap-2">
-          <span
-            className={`w-2 h-2 rounded-full ${status === "ready" ? "bg-emerald-400" : "bg-amber-400"}`}
-          />
-          <span className="font-semibold">
-            {status === "ready"
-              ? `${total.toLocaleString()} Contributions`
-              : "GitHub Contributions"}
-          </span>
-        </div>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noreferrer"
-          className="text-[10px] hover:opacity-70"
-          style={{ color: T.muted }}
-        >
-          @{GITHUB_USERNAME} ↗
-        </a>
-      </div>
-      <div
-        className="rounded-2xl p-3 sm:p-4"
-        style={{
-          background: dark ? "#08080a" : "#eeeeF2",
-          border: `1px solid ${T.glassBorder}`,
-        }}
-      >
-        {status === "ready" ? (
-          <>
+    <div ref={container} className="contribution-calendar w-full min-w-0 font-mono">
+      {status === "ready" ? (
+        <>
+          {active && (
+            <div id={tooltipId} role="tooltip" className="contribution-tooltip" style={{ left: tooltipLeft }}>
+              {active.date} · {active.count} {active.count === 1 ? "contribution" : "contributions"}
+            </div>
+          )}
+          <div className="contribution-scroll" onScroll={() => {
+            const focused = cells.current.findIndex(cell => cell === document.activeElement);
+            if (focused >= 0) showTooltip(focused, cells.current[focused]!);
+            else setSelected(null);
+          }}>
             <div
               className="contribution-dots"
-              role="img"
-              aria-label={`${total} contributions across ${days.length} days.`}
+              role="group"
+              aria-label={`${total} contributions across ${days.length} days. Use arrow keys to explore dates.`}
             >
-              {days.map((day, index) => (
-                <span
-                  key={day.date}
-                  title={`${day.count} contributions on ${day.date}`}
-                  onMouseEnter={() => setSelected(index)}
-                  className="contribution-dot"
-                  style={{
-                    backgroundColor: colors[day.level],
-                    boxShadow:
-                      day.level === 4 && dark ? "0 0 5px #ffffff35" : undefined,
-                  }}
-                />
-              ))}
+              {days.map((day, index) => {
+                const level = activityLevel(day.count);
+                const position = weekdayOffset + Math.round((Date.parse(`${day.date}T00:00:00Z`) - firstDate) / 86400000);
+                return (
+                  <button
+                    key={day.date}
+                    ref={element => { cells.current[index] = element; }}
+                    type="button"
+                    className="contribution-cell"
+                    style={{ gridColumn: Math.floor(position / 7) + 1, gridRow: position % 7 + 1 }}
+                    tabIndex={index === focusIndex ? 0 : -1}
+                    aria-label={`${day.count} ${day.count === 1 ? "contribution" : "contributions"} on ${day.date}`}
+                    aria-describedby={selected === index ? tooltipId : undefined}
+                    onMouseEnter={event => showTooltip(index, event.currentTarget)}
+                    onMouseLeave={() => setSelected(null)}
+                    onFocus={event => { setFocusIndex(index); showTooltip(index, event.currentTarget); }}
+                    onBlur={() => setSelected(null)}
+                    onClick={event => showTooltip(index, event.currentTarget)}
+                    onKeyDown={event => {
+                      if (event.key === "Escape") { setSelected(null); return; }
+                      const offsets: Record<string, number> = { ArrowUp: -1, ArrowDown: 1, ArrowLeft: -7, ArrowRight: 7 };
+                      const next = event.key === "Home" ? 0 : event.key === "End" ? days.length - 1 : event.key in offsets ? Math.max(0, Math.min(days.length - 1, index + offsets[event.key])) : null;
+                      if (next !== null) {
+                        event.preventDefault();
+                        cells.current[next]?.focus();
+                      }
+                    }}
+                  >
+                    <span aria-hidden="true" className="contribution-dot" style={{ width: dotSizes[level], height: dotSizes[level], backgroundColor: dotColors[level] }} />
+                  </button>
+                );
+              })}
             </div>
-            <div
-              className="mt-3 pt-2.5 flex flex-wrap items-center justify-between gap-2 border-t text-[10px]"
-              style={{ borderColor: T.glassBorder, color: T.muted }}
-            >
-              <span>
-                {active
-                  ? `${active.count} contributions · ${active.date}`
-                  : `Activity over the last ${days.length} days`}
-              </span>
-              <span className="flex items-center gap-1.5">
-                Less{" "}
-                {colors.map((color) => (
-                  <i
-                    key={color}
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ background: color }}
-                  />
-                ))}{" "}
-                More
-              </span>
-            </div>
-          </>
-        ) : (
-          <div
-            className="min-h-28 flex flex-col justify-center items-center gap-3 text-xs"
-            role="status"
-            style={{ color: T.muted }}
-          >
-            {status === "loading" ? (
-              "Loading GitHub activity…"
-            ) : (
-              <>
-                <span>GitHub activity is temporarily unavailable.</span>
-                <button
-                  onClick={retry}
-                  className="underline underline-offset-4"
-                >
-                  Try again
-                </button>
-              </>
-            )}
           </div>
-        )}
-      </div>
+          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[9px] uppercase tracking-[0.1em]">
+            <span>{total.toLocaleString()} contributions in the last {days.length} days</span>
+            <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-[#DEDEE0]">@{GITHUB_USERNAME} &#8599;</a>
+          </div>
+        </>
+      ) : (
+        <div className="min-h-28 flex flex-col justify-center items-center gap-3 text-xs" role="status">
+          {status === "loading" ? "Loading GitHub activity…" : (
+            <>
+              <span>GitHub activity is temporarily unavailable.</span>
+              <button onClick={retry} className="underline underline-offset-4">Try again</button>
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -582,8 +582,8 @@ export default function App() {
             </section>
 
             {/* GitHub Contribution Section */}
-            <section style={bubble(T, { padding: 20 })} className="w-full">
-              <GithubDotContribution dark={dark} T={T} />
+            <section className="w-full min-w-0" aria-label="GitHub contributions">
+              <GithubDotContribution />
             </section>
 
             {/* About & Philosophy */}

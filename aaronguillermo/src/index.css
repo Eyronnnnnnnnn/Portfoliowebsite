@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,300&display=swap');
 @import 'tailwindcss';
 
 html,
@@ -55,15 +55,19 @@ section[id] { scroll-margin-top: 24px; }
 .premium-modal::backdrop { background: #030711ad; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 .project-modal-image { background: radial-gradient(ellipse at 30% 30%, #76a9f512, transparent 75%); }
 .modal-close { position: absolute; right: 16px; top: 16px; z-index: 1; width: 36px; height: 36px; border: 1px solid; border-radius: 50%; font-size: 22px; cursor: pointer; }
-.contribution-dots { display: grid; grid-template-rows: repeat(7, 1fr); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; width: 100%; padding-block: 2px; }
-.contribution-dot { width: min(100%, 10px); aspect-ratio: 1; border-radius: 50%; justify-self: center; }
+.contribution-calendar { position: relative; background: #0B0B0D; color: #77777D; padding-block: 30px 4px; }
+.contribution-scroll { overflow-x: auto; scrollbar-width: thin; scrollbar-color: #343438 #0B0B0D; }
+.contribution-scroll::-webkit-scrollbar { height: 4px; }
+.contribution-scroll::-webkit-scrollbar-thumb { background: #343438; }
+.contribution-dots { display: grid; grid-template-rows: repeat(7, 15px); grid-auto-columns: 15px; width: max-content; padding: 2px; }
+.contribution-cell { display: flex; align-items: center; justify-content: center; width: 15px; height: 15px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.contribution-cell:focus-visible { outline: 1px solid #DEDEE0; outline-offset: -1px; border-radius: 50%; }
+.contribution-tooltip { position: absolute; top: 2px; z-index: 1; width: 240px; max-width: 100%; padding: 4px 6px; background: #1C1C1F; color: #DEDEE0; font-size: 10px; line-height: 16px; text-align: center; pointer-events: none; }
+.contribution-dot { display: block; flex: none; border-radius: 50%; }
 .premium-companion { filter: drop-shadow(0 8px 12px #0002) drop-shadow(0 0 12px #8a9ad215); }
 .premium-companion > circle:first-of-type { opacity: .35; }
 .floating-bot { animation-duration: 6s !important; }
-@media (max-width: 640px) {
-  .contribution-dots { gap: 3px; }
-  .contribution-calendar { gap: 10px; }
-}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto !important; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
