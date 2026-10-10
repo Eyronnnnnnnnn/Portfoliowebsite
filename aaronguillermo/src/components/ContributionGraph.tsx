@@ -1,4 +1,4 @@
-﻿import { useId, useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import useContributions from "../hooks/useContributions";
 import { GITHUB_URL, GITHUB_USERNAME } from "../data/portfolio";
 import type { CSSProperties } from "react";
@@ -46,7 +46,7 @@ export default function GithubDotContribution({ dark, T }: { dark: boolean; T: T
 
   return (
     <div className="contribution-calendar w-full min-w-0" data-theme={dark ? "dark" : "light"} style={{ color: T.muted, backgroundColor: T.glass, borderColor: T.glassBorder, "--contribution-ink": T.text, "--contribution-scrollbar": dark ? "#343438" : "#C3C3C8", "--contribution-columns": weeks || 53 } as CSSProperties}>
-      <div className="flex items-center justify-between gap-3 text-[10px]">
+      <div className="flex items-center justify-between gap-3 text-[8px]">
         <h2 className="font-mono uppercase tracking-[0.16em]">GitHub activity</h2>
         <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="contribution-profile">@{GITHUB_USERNAME} <span aria-hidden="true">&#8599;</span></a>
       </div>
@@ -54,7 +54,7 @@ export default function GithubDotContribution({ dark, T }: { dark: boolean; T: T
         <div><strong style={{ color: T.text }}>{total.toLocaleString()}</strong><span>contributions in the last {days.length} days</span></div>
         <span className="contribution-active"><i aria-hidden="true" />{activeDays} active days</span>
       </div>}
-      <div ref={container} className="relative pt-[34px]">
+      <div ref={container} className="relative pt-[16px]">
       {status === "ready" ? (
         <>
           {active && (
