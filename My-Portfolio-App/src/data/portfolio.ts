@@ -2,6 +2,8 @@
 export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
 import chaindaanCover from "../assets/chaindaan-cover.svg";
 import chaindaanLogo from "../assets/photos/ChainDaan-logo/chaindaan.logo.png";
+import aiLiteracyCertificate from "../assets/photos/Certifications/introduction to Ai literacy Certificate.png";
+import aiEngineerCertificate from "../assets/photos/Certifications/AI ENGINEER FOR DEVELOPERS ASSOCIATE.png";
 export const YEARS = [2026, 2025, 2024];
 const DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
 export type Project = { id: number; title: string; desc: string; tags: string[]; image: string; icon?: string; role?: string; details?: string; status?: string };
@@ -44,6 +46,7 @@ export type Certificate = { name: string; issuer: string; year: string; color: s
 export const CERTS: Certificate[] = [
   {
     name: "Associate AI Engineer for Developers",
+    image: aiEngineerCertificate,
     issuer: "DataCamp",
     year: "2026",
     color: "#f5a623",
@@ -51,6 +54,7 @@ export const CERTS: Certificate[] = [
   },
   {
     name: "Introduction to AI Literacy and Responsible Use",
+    image: aiLiteracyCertificate,
     issuer: "Commission on Higher Education (CHED) Bagong Pilipinas (ACHIEVE program) Mapúa University(MAPUA)",
     year: "2026",
     color: "#f5a623",

@@ -625,15 +625,19 @@ export default function App() {
                 </p>
               </section>
               </div>
-              <a href="https://appbuildersph.com/apps/chaindaan" target="_blank" rel="noopener noreferrer" aria-label="View ChainDaan on App Builders PH" className="app-builder-card group relative flex flex-col p-6 rounded-[26px] overflow-hidden min-h-64">
-                <span className="relative flex items-center justify-between text-[10px] font-mono tracking-wider"><span>03 — APP BUILDER</span><span aria-hidden="true" className="text-lg">↗</span></span>
+              <section className="app-builder-card relative flex flex-col p-6 rounded-[26px] overflow-hidden min-h-64">
+                <h2 className="relative text-[10px] font-mono tracking-wider">03 — APP BUILDER</h2>
                 <div className="relative flex flex-1 items-center py-6">
-                  <div className="app-builder-item flex w-full min-w-0 items-center gap-3 rounded-2xl px-4 py-3">
-                    <img src={chaindaanLogo} alt="ChainDaan logo" className="w-10 h-10 shrink-0 rounded-xl border border-white/15 shadow-sm" />
-                    <span className="text-sm font-medium tracking-tight">ChainDaan</span>
-                  </div>
+                  <a href="https://appbuildersph.com/apps/chaindaan" target="_blank" rel="noopener noreferrer" aria-label="View ChainDaan on App Builders PH" className="app-builder-item relative flex w-full min-w-0 items-center gap-3 rounded-2xl px-4 py-3.5 overflow-hidden">
+                    <img src={chaindaanLogo} alt="ChainDaan logo" className="relative w-10 h-10 shrink-0 rounded-xl border border-white/15 shadow-sm" />
+                    <span className="relative flex min-w-0 flex-1 flex-col gap-1">
+                      <span className="text-sm font-medium tracking-tight">ChainDaan</span>
+                      <span className="text-[10px] font-normal tracking-wide text-emerald-100/80">Open in App Builders</span>
+                    </span>
+                    <span aria-hidden="true" className="relative text-sm text-emerald-100/80">↗</span>
+                  </a>
                 </div>
-              </a>
+              </section>
             </div>
 
             {/* Experience */}
