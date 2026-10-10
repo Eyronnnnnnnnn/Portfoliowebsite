@@ -31,7 +31,9 @@ export const EDUCATION = [
   { degree: "Elementary", school: "R and O Academy", period: "Grade 1-5", note: "", logo: "mmsu" as const },
 ];
 
-export const CERTS = [
+export type Certificate = { name: string; issuer: string; year: string; color: string; desc: string; image?: string };
+// Set image to the certificate image URL or an imported local asset.
+export const CERTS: Certificate[] = [
   {
     name: "Associate AI Engineer for Developers",
     issuer: "DataCamp",
@@ -67,6 +69,16 @@ export const SKILLS: Skill[] = [
   { name: "Git", src: `${DEVICON_BASE}/git/git-original.svg` },
   { name: "GitHub", src: `${DEVICON_BASE}/github/github-original.svg`, invertOnDark: true },
   { name: "VS Code", src: `${DEVICON_BASE}/vscode/vscode-original.svg` },
+];
+
+export const SKILL_GROUPS: { name: string; skills: Skill[] }[] = [
+  { name: "Frontend", skills: SKILLS.filter((s) => ["HTML", "CSS", "JavaScript", "React.js", "Next.js"].includes(s.name)) },
+  { name: "Backend", skills: SKILLS.filter((s) => ["Java", "Node.js", "Express.js"].includes(s.name)) },
+  { name: "Databases", skills: SKILLS.filter((s) => ["SQL", "NoSQL", "MongoDB"].includes(s.name)) },
+  { name: "Software Engineering", skills: ["Agile", "Scrum", "System Design", "System Architecture"].map((name) => ({ name })) },
+  { name: "AI", skills: ["Codex", "Claude (Anthropic)", "Generative AI"].map((name) => ({ name })) },
+  { name: "Deployment Platforms", skills: [{ name: "Vercel" }, { name: "Render" }, ...SKILLS.filter((s) => s.name === "Docker")] },
+  { name: "Tools", skills: [...SKILLS.filter((s) => ["Git", "GitHub", "VS Code"].includes(s.name)), { name: "Figma", src: `${DEVICON_BASE}/figma/figma-original.svg` }] },
 ];
 
 

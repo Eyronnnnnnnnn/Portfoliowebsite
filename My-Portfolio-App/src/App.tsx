@@ -1,12 +1,12 @@
 import { DARK, LIGHT, type Theme } from "./theme/palette";
-import { GITHUB_URL, YEARS, PROJECTS, EXPERIENCE, EDUCATION, CERTS, SKILLS, type Skill } from "./data/portfolio";
+import { GITHUB_URL, YEARS, PROJECTS, EXPERIENCE, EDUCATION, CERTS, SKILLS, SKILL_GROUPS, type Skill, type Certificate } from "./data/portfolio";
 import GithubDotContribution from "./components/ContributionGraph";
 import PremiumRobot from "./components/PremiumRobot";
 import PremiumDrone from "./components/PremiumDrone";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ProfilePhoto from "./components/ProfilePhoto";
 
-type Page = "home" | "projects" | "certifications" | "about";
+type Page = "home" | "projects" | "certifications" | "about" | "education" | "skills";
 
 // Siri's signature gradient sweep — used for the scroll progress line and a few glow accents.
 const SIRI_GRADIENT =
@@ -315,7 +315,7 @@ function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean 
       >
         {skill.custom ? (
           <CustomTechIcon kind={skill.custom} active={hover} />
-        ) : (
+        ) : skill.src ? (
           <img
             src={skill.src}
             alt={skill.name}
@@ -323,6 +323,8 @@ function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean 
             height={24}
             style={{ filter: iconFilter, transition: "filter 0.3s ease" }}
           />
+        ) : (
+          <span className="text-xs font-semibold" style={{ color: T.accent }} aria-hidden="true">{skill.name.split(" ").map((word) => word[0]).slice(0, 2).join("")}</span>
         )}
       </div>
       <span className="text-[9px] font-mono text-center leading-tight" style={{ color: T.muted }}>{skill.name}</span>
@@ -353,16 +355,81 @@ function AllProjectsPage({ T }: { T: Theme }) {
   );
 }
 
+function CertificateImage({ certificate, T }: { certificate: Certificate; T: Theme }) {
+  const [failed, setFailed] = useState(false);
+  return certificate.image && !failed ? (
+    <img src={certificate.image} alt={`${certificate.name} certificate`} onError={() => setFailed(true)} className="w-full h-full object-contain" />
+  ) : (
+    <div className="flex h-full min-h-48 flex-col items-center justify-center gap-3 p-6 text-center" style={{ background: T.glass, color: T.muted }}>
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 8h10M7 11h6m2 5-1 6 3-2 3 2-1-6"/><circle cx="17" cy="15" r="3"/></svg>
+      <span className="text-xs">Certificate image coming soon</span>
+      <span className="text-[10px]">{certificate.issuer}</span>
+    </div>
+  );
+}
+
+function CertificateModal({ certificate, T, onClose }: { certificate: Certificate; T: Theme; onClose: () => void }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    dialog?.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog?.close();
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, []);
+  return (
+    <dialog ref={dialogRef} aria-labelledby="certificate-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} className="m-auto w-[calc(100%-2rem)] max-w-4xl max-h-[90dvh] overflow-y-auto rounded-3xl p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm" style={{ background: T.bg, color: T.text, border: `1px solid ${T.glassBorder}` }}>
+      <div className="relative grid md:grid-cols-[1.2fr_1fr]">
+        <button autoFocus onClick={onClose} aria-label="Close certificate" className="absolute right-3 top-3 z-10 rounded-full w-9 h-9 text-xl" style={{ background: T.bg, border: `1px solid ${T.glassBorder}` }}>×</button>
+        <div className="min-h-60 md:min-h-96 p-5 flex items-center justify-center"><CertificateImage certificate={certificate} T={T} /></div>
+        <div className="p-6 pt-12 md:p-8 md:pt-16 flex flex-col justify-center gap-4">
+          <span className="text-[10px] font-mono" style={{ color: T.muted }}>CERTIFICATE · {certificate.year}</span>
+          <h2 id="certificate-title" className="text-xl font-semibold tracking-tight">{certificate.name}</h2>
+          <span className="text-xs self-start rounded-xl border px-3 py-2" style={{ borderColor: T.glassBorder, color: T.accent }}>Provider: {certificate.issuer}</span>
+          <p className="text-sm leading-relaxed" style={{ color: T.muted }}>{certificate.desc}</p>
+        </div>
+      </div>
+    </dialog>
+  );
+}
+
+function AllEducationPage({ T }: { T: Theme }) {
+  return <div className="space-y-6">
+    <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>EDUCATION</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">My learning journey.</h2></div>
+    <section style={bubble(T)} className="p-6 sm:p-8">
+      {EDUCATION.map((e, index) => <div key={`${e.school}-${index}`} className="flex gap-4 py-5 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
+        <EduMark variant={e.logo} /><div><h3 className="text-sm font-semibold">{e.degree}</h3><p className="text-xs text-emerald-500 mt-2">{e.school}</p><p className="text-xs mt-2" style={{ color: T.muted }}>{e.period}{e.note && ` · ${e.note}`}</p></div>
+      </div>)}
+    </section>
+  </div>;
+}
+
+function AllSkillsPage({ T, dark }: { T: Theme; dark: boolean }) {
+  return <div className="space-y-6">
+    <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>SKILL SET</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">What I build with.</h2></div>
+    <div className="grid sm:grid-cols-2 gap-5">{SKILL_GROUPS.map((group) => <section key={group.name} style={bubble(T)} className="p-6">
+      <h3 className="text-sm font-semibold mb-5">{group.name}</h3><div className="flex flex-wrap gap-x-5 gap-y-6">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} dark={dark} />)}</div>
+    </section>)}</div>
+  </div>;
+}
+
 function AllCertificationsPage({ T }: { T: Theme }) {
+  const [selected, setSelected] = useState<Certificate | null>(null);
   return (
     <div className="space-y-6">
       <div>
         <p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>CERTIFICATIONS</p>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Certificates & credentials.</h2>
       </div>
-      <div className="space-y-4">
+      <div className="grid sm:grid-cols-2 gap-5">
         {CERTS.map((c) => (
           <section key={c.name} style={bubble(T)} className="p-6">
+            <button onClick={() => setSelected(c)} aria-label={`View ${c.name} certificate`} className="block w-full aspect-[4/3] overflow-hidden rounded-2xl border mb-5 hover:opacity-80 transition-opacity" style={{ borderColor: T.glassBorder }}><CertificateImage certificate={c} T={T} /></button>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full" style={{ backgroundColor: c.color }} />
@@ -370,11 +437,12 @@ function AllCertificationsPage({ T }: { T: Theme }) {
               </div>
               <span className="text-[10px] font-mono" style={{ color: T.muted }}>{c.year}</span>
             </div>
-            <p className="text-xs font-medium mb-2" style={{ color: T.muted }}>{c.issuer}</p>
+            <span className="inline-block text-[10px] rounded-lg border px-2 py-1 mb-3" style={{ color: T.accent, borderColor: T.glassBorder }}>Provider: {c.issuer}</span>
             <p className="text-xs font-light leading-relaxed" style={{ color: T.text }}>{c.desc}</p>
           </section>
         ))}
       </div>
+      {selected && <CertificateModal certificate={selected} T={T} onClose={() => setSelected(null)} />}
     </div>
   );
 }
@@ -554,6 +622,8 @@ export default function App() {
         {page === "projects" && <AllProjectsPage T={T} />}
         {page === "certifications" && <AllCertificationsPage T={T} />}
         {page === "about" && <AboutStoryPage T={T} />}
+        {page === "education" && <AllEducationPage T={T} />}
+        {page === "skills" && <AllSkillsPage T={T} dark={dark} />}
 
         {page === "home" && (
           <>
@@ -676,9 +746,12 @@ export default function App() {
             {/* Education & Certs */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <section style={bubble(T)} className="p-6">
-                <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>03 — EDUCATION</p>
+                <div className="flex items-center justify-between mb-4">
+                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>03 — EDUCATION</p>
+                  <button onClick={() => goTo("education")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>See all →</button>
+                </div>
                 <div className="space-y-4">
-                  {EDUCATION.map((e, i) => (
+                  {EDUCATION.slice(0, 2).map((e, i) => (
                     <div key={i} className="flex items-start gap-3">
                       <EduMark variant={e.logo} />
                       <div>
@@ -700,9 +773,11 @@ export default function App() {
                 </div>
                 <div className="space-y-2">
                   {CERTS.map((c) => (
-                    <div key={c.name} className="flex justify-between items-center text-xs">
-                      <span className="font-medium">{c.name}</span>
-                      <span className="text-[10px] font-mono" style={{ color: T.muted }}>{c.year}</span>
+                    <div key={c.name} className="flex justify-between items-start gap-3 py-2 text-xs">
+                      <div className="min-w-0"><span className="font-medium">{c.name}</span>
+                        <span className="block w-fit mt-2 rounded-lg border px-2 py-1 text-[9px] leading-relaxed" style={{ color: T.accent, borderColor: T.glassBorder }}>Provider: {c.issuer}</span>
+                      </div>
+                      <span className="text-[10px] font-mono shrink-0" style={{ color: T.muted }}>{c.year}</span>
                     </div>
                   ))}
                 </div>
@@ -711,7 +786,10 @@ export default function App() {
 
             {/* Skills */}
             <section style={bubble(T)} className="p-6">
-              <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>05 — SKILLS</p>
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-[10px] font-mono" style={{ color: T.muted }}>05 — SKILLS</p>
+                <button onClick={() => goTo("skills")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>View all →</button>
+              </div>
               <div className="flex flex-wrap gap-4 justify-center">
                 {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} dark={dark} />)}
               </div>
