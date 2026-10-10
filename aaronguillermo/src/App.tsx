@@ -583,7 +583,7 @@ export default function App() {
 
             {/* GitHub Contribution Section */}
             <section className="w-full min-w-0" aria-label="GitHub contributions">
-              <GithubDotContribution />
+              <GithubDotContribution dark={dark} T={T} />
             </section>
 
             {/* About & Philosophy */}

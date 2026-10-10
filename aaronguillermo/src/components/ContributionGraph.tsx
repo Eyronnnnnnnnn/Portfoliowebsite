@@ -1,14 +1,17 @@
 ﻿import { useId, useRef, useState } from "react";
 import useContributions from "../hooks/useContributions";
 import { GITHUB_URL, GITHUB_USERNAME } from "../data/portfolio";
+import type { CSSProperties } from "react";
+import type { Theme } from "../theme/palette";
 
 const dotSizes = [2, 4, 6, 9, 12];
-const dotColors = ["#262629", "#606064", "#8A8A8E", "#B6B6BA", "#DEDEE0"];
+const darkDotColors = ["#262629", "#606064", "#8A8A8E", "#B6B6BA", "#DEDEE0"];
+const lightDotColors = ["#DADADD", "#ABABB0", "#85858C", "#5E5E66", "#35353C"];
 // Stable count thresholds keep the same activity looking the same across dates.
 const activityLevel = (count: number) =>
   count === 0 ? 0 : count <= 3 ? 1 : count <= 6 ? 2 : count <= 9 ? 3 : 4;
 
-export default function GithubDotContribution() {
+export default function GithubDotContribution({ dark, T }: { dark: boolean; T: Theme }) {
   const { days, status, retry } = useContributions();
   const [selected, setSelected] = useState<number | null>(null);
   const [focusIndex, setFocusIndex] = useState(0);
@@ -20,23 +23,43 @@ export default function GithubDotContribution() {
   const active = selected === null ? null : days[selected];
   const firstDate = days.length ? Date.parse(`${days[0].date}T00:00:00Z`) : 0;
   const weekdayOffset = new Date(firstDate).getUTCDay();
+  const dotColors = dark ? darkDotColors : lightDotColors;
+  const activeDays = days.filter(day => day.count > 0).length;
+  const weeks = Math.ceil((weekdayOffset + days.length) / 7);
+  const months = days.flatMap((day, index) => {
+    const date = new Date(`${day.date}T00:00:00Z`);
+    const column = Math.floor((weekdayOffset + index) / 7) + 1;
+    return (index === 0 || date.getUTCDate() === 1) && column <= weeks - 2
+      ? [{ label: date.toLocaleDateString("en", { month: "short", timeZone: "UTC" }), column }]
+      : [];
+  }).filter((month, index, all) => index === all.length - 1 || all[index + 1].column - month.column >= 3);
 
   function showTooltip(index: number, cell: HTMLButtonElement) {
     const bounds = container.current?.getBoundingClientRect();
     if (bounds) {
-      const center = cell.getBoundingClientRect().left + 7.5 - bounds.left;
+      const rect = cell.getBoundingClientRect();
+      const center = rect.left + rect.width / 2 - bounds.left;
       setTooltipLeft(Math.max(0, Math.min(center - 120, bounds.width - 240)));
     }
     setSelected(index);
   }
 
   return (
-    <div ref={container} className="contribution-calendar w-full min-w-0 font-mono">
+    <div className="contribution-calendar w-full min-w-0" data-theme={dark ? "dark" : "light"} style={{ color: T.muted, backgroundColor: T.glass, borderColor: T.glassBorder, "--contribution-ink": T.text, "--contribution-scrollbar": dark ? "#343438" : "#C3C3C8", "--contribution-columns": weeks || 53 } as CSSProperties}>
+      <div className="flex items-center justify-between gap-3 text-[10px]">
+        <h2 className="font-mono uppercase tracking-[0.16em]">GitHub activity</h2>
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="contribution-profile">@{GITHUB_USERNAME} <span aria-hidden="true">&#8599;</span></a>
+      </div>
+      {status === "ready" && <div className="contribution-summary">
+        <div><strong style={{ color: T.text }}>{total.toLocaleString()}</strong><span>contributions in the last {days.length} days</span></div>
+        <span className="contribution-active"><i aria-hidden="true" />{activeDays} active days</span>
+      </div>}
+      <div ref={container} className="relative pt-[34px]">
       {status === "ready" ? (
         <>
           {active && (
             <div id={tooltipId} role="tooltip" className="contribution-tooltip" style={{ left: tooltipLeft }}>
-              {active.date} · {active.count} {active.count === 1 ? "contribution" : "contributions"}
+              <strong>{active.count} {active.count === 1 ? "contribution" : "contributions"}</strong><span> · {new Date(`${active.date}T00:00:00Z`).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })}</span>
             </div>
           )}
           <div className="contribution-scroll" onScroll={() => {
@@ -44,6 +67,8 @@ export default function GithubDotContribution() {
             if (focused >= 0) showTooltip(focused, cells.current[focused]!);
             else setSelected(null);
           }}>
+            <div className="contribution-plot">
+            <div className="contribution-months" aria-hidden="true">{months.map(month => <span key={month.column} style={{ gridColumn: `${month.column} / span 3` }}>{month.label}</span>)}</div>
             <div
               className="contribution-dots"
               role="group"
@@ -77,15 +102,16 @@ export default function GithubDotContribution() {
                       }
                     }}
                   >
-                    <span aria-hidden="true" className="contribution-dot" style={{ width: dotSizes[level], height: dotSizes[level], backgroundColor: dotColors[level] }} />
+                    <span aria-hidden="true" className="contribution-dot" data-level={level} style={{ width: dotSizes[level], height: dotSizes[level], backgroundColor: dotColors[level] }} />
                   </button>
                 );
               })}
             </div>
+            </div>
           </div>
-          <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[9px] uppercase tracking-[0.1em]">
-            <span>{total.toLocaleString()} contributions in the last {days.length} days</span>
-            <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="hover:text-[#DEDEE0]">@{GITHUB_USERNAME} &#8599;</a>
+          <div className="contribution-footer">
+            <span>Small steps. Consistent progress.</span>
+            <div className="contribution-legend" aria-label="Larger, stronger dots indicate more contributions"><span>Less</span>{dotSizes.map((size, level) => <span key={level} className="contribution-legend-cell" aria-hidden="true"><i className="contribution-dot" style={{ width: size, height: size, backgroundColor: dotColors[level] }} /></span>)}<span>More</span></div>
           </div>
         </>
       ) : (
@@ -98,6 +124,7 @@ export default function GithubDotContribution() {
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
