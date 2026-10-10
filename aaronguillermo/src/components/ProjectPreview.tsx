@@ -22,9 +22,9 @@ function ProjectModal({ project, T, onClose }: { project: Project; T: Theme; onC
   return createPortal(<dialog ref={ref} aria-labelledby={titleId} onCancel={onClose} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }} className="premium-modal" style={{ color: T.text, backgroundColor: T.bg, borderColor: T.glassBorder }}>
     <div className="relative grid md:grid-cols-[1.15fr_1fr]">
       <button autoFocus onClick={onClose} aria-label="Close project" className="modal-close" style={{ background: T.bg, borderColor: T.glassBorder }}>×</button>
-      <div className="project-modal-image min-w-0 flex items-center p-4 sm:p-6"><div className="w-full overflow-hidden rounded-2xl border" style={{ borderColor: T.glassBorder }}><ProjectImage project={project} /></div></div>
-      <div className="min-w-0 p-6 md:p-9 md:pt-16 space-y-6">
-        <div><p className="text-[10px] tracking-[.2em] font-mono mb-3" style={{ color: T.muted }}>PROJECT OVERVIEW</p><h2 id={titleId} className="text-3xl font-semibold tracking-tight">{project.title}</h2>{project.status && <span className="glass-chip mt-4" style={{ borderColor: T.glassBorder, color: T.accent }}>{project.status}</span>}</div>
+      <div className="project-modal-image modal-media min-w-0 flex items-center"><div className="w-full overflow-hidden rounded-2xl border" style={{ borderColor: T.glassBorder }}><ProjectImage project={project} /></div></div>
+      <div className="modal-content min-w-0 space-y-4">
+        <div><p className="text-[10px] tracking-[.2em] font-mono mb-3" style={{ color: T.muted }}>PROJECT OVERVIEW</p><h2 id={titleId} className="text-2xl sm:text-3xl font-semibold tracking-tight">{project.title}</h2>{project.status && <span className="glass-chip mt-4" style={{ borderColor: T.glassBorder, color: T.accent }}>{project.status}</span>}</div>
         <div className="space-y-3 text-sm leading-relaxed" style={{ color: T.muted }}><p>{project.desc}</p>{project.details && <p>{project.details}</p>}</div>
         {project.role && <div className="border-t pt-5" style={{ borderColor: T.glassBorder }}><p className="text-[10px] tracking-widest mb-2" style={{ color: T.muted }}>MY ROLE</p><p className="text-xs font-medium">{project.role}</p></div>}
         <div><h3 className="text-[10px] tracking-widest mb-3" style={{ color: T.muted }}>TECH STACK</h3><div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="glass-chip" style={{ borderColor: T.glassBorder }}>{tag}</span>)}</div></div>
@@ -35,8 +35,8 @@ function ProjectModal({ project, T, onClose }: { project: Project; T: Theme; onC
 
 export default function ProjectPreview({ project, T, compact = false, onExplore }: { project: Project; T: Theme; compact?: boolean; onExplore?: () => void }) {
   const [open, setOpen] = useState(false);
-  if (compact) return <button onClick={onExplore} aria-label={`View ${project.title} in all projects`} className="project-preview flex w-full items-start gap-4 rounded-2xl border p-4 sm:p-5 text-left" style={{ borderColor: T.glassBorder, color: T.text }}>
-    <span className="relative block w-14 h-14 sm:w-16 sm:h-16 shrink-0 overflow-hidden rounded-2xl border shadow-lg" style={{ borderColor: T.glassBorder, background: T.glass }}>
+  if (compact) return <button onClick={onExplore} aria-label={`View ${project.title} in all projects`} className="project-preview project-compact flex w-full items-start gap-3 sm:gap-4 rounded-2xl border p-3 sm:p-4 text-left" style={{ borderColor: T.glassBorder, color: T.text }}>
+    <span className="relative block w-10 h-10 sm:w-14 sm:h-14 shrink-0 overflow-hidden rounded-2xl border shadow-lg" style={{ borderColor: T.glassBorder, background: T.glass }}>
       {project.icon ? <img src={project.icon} alt={`${project.title} app icon`} className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center text-xl font-semibold">{project.title[0]}</span>}
       <span className="pointer-events-none absolute inset-0 rounded-2xl" style={{ boxShadow: "inset 0 1px 1px #ffffff40" }} />
     </span>
@@ -49,7 +49,7 @@ export default function ProjectPreview({ project, T, compact = false, onExplore 
   return <>
     <button onClick={() => setOpen(true)} aria-label={`View ${project.title} project`} className="project-preview group w-full text-left grid sm:grid-cols-[.85fr_1.15fr] overflow-hidden rounded-2xl border" style={{ borderColor: T.glassBorder, color: T.text }}>
       <span className="block overflow-hidden aspect-[4/3]"><ProjectImage project={project} /></span>
-      <span className="flex min-w-0 flex-col justify-center p-5 sm:p-6 gap-3">
+      <span className="flex min-w-0 flex-col justify-center p-4 sm:p-5 gap-3">
         <span className="text-[9px] font-mono tracking-widest uppercase" style={{ color: T.accent }}>{project.status || "Project"}</span>
         <span className="text-xl font-semibold tracking-tight">{project.title}</span>
         <span className="text-xs leading-relaxed" style={{ color: T.muted }}>{project.desc}</span>

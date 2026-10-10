@@ -48,7 +48,7 @@ function bubble(T: Theme, extra?: React.CSSProperties): React.CSSProperties {
     backdropFilter: "saturate(180%) blur(30px)",
     WebkitBackdropFilter: "saturate(180%) blur(30px)",
     border: `1px solid ${T.glassBorder}`,
-    borderRadius: 26,
+    borderRadius: "var(--card-radius)",
     boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(255,255,255,.025), 0 16px 48px rgba(0,0,0,.12)",
     ...extra,
   };
@@ -208,7 +208,7 @@ function Magnetic({ as: Tag = "a", className, style, children, strength = 14, ..
 // crest asset yourself if you have the rights to use it.
 // ---------------------------------------------------------------------------
 function EduMark({ variant }: { variant: "mmsu" | "generic" }) {
-  if (variant === "mmsu") return <img src={mmsuLogo} alt="Mariano Marcos State University seal" className="w-11 h-11 object-contain shrink-0" />;
+  if (variant === "mmsu") return <img src={mmsuLogo} alt="Mariano Marcos State University seal" className="w-10 h-10 object-contain shrink-0" />;
   return (
     <div
       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
@@ -235,13 +235,13 @@ function SkillBadge({ skill, T }: { skill: Skill; T: Theme }) { return <span cla
 // ---------------------------------------------------------------------------
 function AllProjectsPage({ T }: { T: Theme }) {
   return (
-    <div className="space-y-6">
+    <div className="layout-stack">
       <div>
         <p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>ALL PROJECTS</p>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Everything I've shipped.</h2>
       </div>
       {YEARS.map((y) => (
-        <section key={y} style={bubble(T)} className="p-6">
+        <section key={y} style={bubble(T)} className="section-card">
           <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>{y}</p>
           <div className="space-y-3">
             {(PROJECTS[y] ?? []).map((p) => <ProjectPreview key={p.id} project={p} T={T} />)}
@@ -282,9 +282,9 @@ function CertificateModal({ certificate, T, onClose }: { certificate: Certificat
   return (
     <dialog ref={dialogRef} aria-labelledby="certificate-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} className="premium-modal" style={{ backgroundColor: T.bg, color: T.text, borderColor: T.glassBorder }}>
       <div className="relative grid md:grid-cols-[1.2fr_1fr]">
-        <button autoFocus onClick={onClose} aria-label="Close certificate" className="absolute right-3 top-3 z-10 rounded-full w-9 h-9 text-xl" style={{ background: T.bg, border: `1px solid ${T.glassBorder}` }}>×</button>
-        <div className="min-h-60 md:min-h-96 p-5 flex items-center justify-center"><CertificateImage certificate={certificate} T={T} /></div>
-        <div className="p-6 pt-12 md:p-8 md:pt-16 flex flex-col justify-center gap-4">
+        <button autoFocus onClick={onClose} aria-label="Close certificate" className="modal-close" style={{ background: T.bg, border: `1px solid ${T.glassBorder}` }}>×</button>
+        <div className="modal-media min-w-0 min-h-60 md:min-h-96 flex items-center justify-center"><CertificateImage certificate={certificate} T={T} /></div>
+        <div className="modal-content min-w-0 flex flex-col justify-center gap-4">
           <span className="text-[10px] font-mono" style={{ color: T.muted }}>CERTIFICATE · {certificate.year}</span>
           <h2 id="certificate-title" className="text-xl font-semibold tracking-tight">{certificate.name}</h2>
           <span className="text-xs self-start rounded-xl border px-3 py-2" style={{ borderColor: T.glassBorder, color: T.accent }}>Provider: {certificate.issuer}</span>
@@ -296,10 +296,10 @@ function CertificateModal({ certificate, T, onClose }: { certificate: Certificat
 }
 
 function AllEducationPage({ T }: { T: Theme }) {
-  return <div className="space-y-6">
+  return <div className="layout-stack">
     <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>EDUCATION</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">My learning journey.</h2></div>
-    <section style={bubble(T)} className="p-6 sm:p-8">
-      {EDUCATION.map((e, index) => <div key={`${e.school}-${index}`} className="flex gap-4 py-5 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
+    <section style={bubble(T)} className="section-card">
+      {EDUCATION.map((e, index) => <div key={`${e.school}-${index}`} className="flex gap-3 py-4 first:pt-0 last:pb-0 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
         <EduMark variant={e.logo} /><div><h3 className="text-sm font-semibold">{e.degree}</h3><p className="text-xs text-emerald-500 mt-2">{e.school}</p><p className="text-xs mt-2" style={{ color: T.muted }}>{e.period}{e.note && ` · ${e.note}`}</p></div>
       </div>)}
     </section>
@@ -307,9 +307,9 @@ function AllEducationPage({ T }: { T: Theme }) {
 }
 
 function AllSkillsPage({ T }: { T: Theme }) {
-  return <div className="space-y-6">
+  return <div className="layout-stack">
     <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>SKILL SET</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">What I build with.</h2></div>
-    <div style={bubble(T)} className="px-5 sm:px-6 py-2">{SKILL_GROUPS.map((group) => <section key={group.name} className="grid sm:grid-cols-[145px_1fr] gap-3 py-4 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
+    <div style={bubble(T)} className="section-card skill-groups">{SKILL_GROUPS.map((group) => <section key={group.name} className="grid sm:grid-cols-[145px_1fr] gap-3 py-4 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
       <h3 className="text-xs font-medium pt-1" style={{ color: T.muted }}>{group.name}</h3><div className="flex flex-wrap items-center gap-1.5">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} />)}</div>
     </section>)}</div>
   </div>;
@@ -318,21 +318,21 @@ function AllSkillsPage({ T }: { T: Theme }) {
 function AllCertificationsPage({ T }: { T: Theme }) {
   const [selected, setSelected] = useState<Certificate | null>(null);
   return (
-    <div className="space-y-6">
+    <div className="layout-stack">
       <div>
         <p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>CERTIFICATIONS</p>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Certificates & credentials.</h2>
       </div>
-      <div className="grid sm:grid-cols-2 gap-5">
+      <div className="layout-grid grid sm:grid-cols-2">
         {CERTS.map((c) => (
-          <section key={c.name} style={bubble(T)} className="p-6">
+          <section key={c.name} style={bubble(T)} className="section-card">
             <button onClick={() => setSelected(c)} aria-label={`View ${c.name} certificate`} className="block w-full aspect-[4/3] overflow-hidden rounded-2xl border mb-5 hover:opacity-80 transition-opacity" style={{ borderColor: T.glassBorder }}><CertificateImage certificate={c} T={T} /></button>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2">
                 <img src={c.logo} alt={c.logoAlt} className="w-8 h-8 shrink-0 rounded-lg object-contain bg-white p-1" />
                 <h3 className="text-sm font-semibold">{c.name}</h3>
               </div>
-              <span className="text-[10px] font-mono" style={{ color: T.muted }}>{c.year}</span>
+              <span className="text-[10px] font-mono shrink-0" style={{ color: T.muted }}>{c.year}</span>
             </div>
             <span className="inline-block text-[10px] rounded-lg border px-2 py-1 mb-3" style={{ color: T.accent, borderColor: T.glassBorder }}>Provider: {c.issuer}</span>
             <p className="text-xs font-light leading-relaxed" style={{ color: T.text }}>{c.desc}</p>
@@ -346,12 +346,12 @@ function AllCertificationsPage({ T }: { T: Theme }) {
 
 function AboutStoryPage({ T }: { T: Theme }) {
   return (
-    <div className="space-y-6">
+    <div className="layout-stack">
       <div>
         <p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>THE STORY</p>
         <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">How I got here.</h2>
       </div>
-      <section style={bubble(T)} className="p-6 sm:p-8 space-y-5">
+      <section style={bubble(T)} className="section-card space-y-4">
         <p className="text-[10px] font-mono" style={{ color: T.muted }}>
           Placeholder copy below — swap in your real story.
         </p>
@@ -470,16 +470,16 @@ export default function App() {
       <SiriProgressBar />
 
       {/* Floating Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none p-2 sm:p-4">
+      <header className="site-header fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none">
         <nav
-          className="pointer-events-auto flex items-center justify-between border shadow-lg"
+          className="site-nav pointer-events-auto flex items-center justify-between gap-2 border shadow-lg"
           style={{
-            width: isScrolled ? "90%" : "100%",
-            maxWidth: isScrolled ? "460px" : "1024px",
+            width: "100%",
+            maxWidth: isScrolled ? "460px" : "848px",
             height: isScrolled ? "44px" : "56px",
             borderRadius: isScrolled ? "999px" : "16px",
-            paddingLeft: "20px",
-            paddingRight: "20px",
+            paddingLeft: "var(--nav-padding)",
+            paddingRight: "var(--nav-padding)",
             backgroundColor: dark ? "rgba(10,10,12,0.8)" : "rgba(255,255,255,0.8)",
             backdropFilter: "blur(20px)",
             borderColor: T.glassBorder,
@@ -495,18 +495,18 @@ export default function App() {
           </button>
           <div className="flex items-center gap-2">
             {page === "home" ? (
-              <a href="#projects" onClick={() => playIosClickSound()} className="text-xs px-2.5 py-1 rounded-full" style={{ color: T.muted }}>
+              <a href="#projects" onClick={() => playIosClickSound()} className="text-xs px-2.5 min-h-9 inline-flex items-center rounded-full whitespace-nowrap" style={{ color: T.muted }}>
                 Work
               </a>
             ) : (
-              <button onClick={() => goTo("home")} className="text-xs px-2.5 py-1 rounded-full" style={{ color: T.muted }}>
+              <button onClick={() => goTo("home")} className="text-xs px-2.5 min-h-9 inline-flex items-center rounded-full whitespace-nowrap" style={{ color: T.muted }}>
                 ← Back
               </button>
             )}
             <button
               onClick={() => { playIosClickSound(); setDark(!dark); }}
               aria-label="Toggle theme"
-              className="w-7 h-7 rounded-full flex items-center justify-center text-xs active:scale-90"
+              className="w-9 h-9 shrink-0 rounded-full flex items-center justify-center text-xs active:scale-90"
               style={{ backgroundColor: T.glass, border: `1px solid ${T.glassBorder}` }}
             >
               {dark ? "☼" : "☾"}
@@ -515,7 +515,7 @@ export default function App() {
         </nav>
       </header>
 
-      <main key={page} className="page-enter relative max-w-4xl mx-auto px-4 sm:px-6 py-5 space-y-6">
+      <main key={page} className="page-enter page-shell layout-stack relative">
         {page === "projects" && <AllProjectsPage T={T} />}
         {page === "certifications" && <AllCertificationsPage T={T} />}
         {page === "about" && <AboutStoryPage T={T} />}
@@ -525,7 +525,7 @@ export default function App() {
         {page === "home" && (
           <>
             {/* Hero Section with Premium Floating Robots */}
-            <section className="relative min-h-[350px] flex items-center justify-center">
+            <section className="hero-section relative flex items-center justify-center">
               <div
                 className="absolute left-0 top-1/4 hidden md:block floating-bot cursor-pointer"
                 onClick={() => playIosClickSound()}
@@ -542,7 +542,7 @@ export default function App() {
                 <PremiumDrone dark={dark} mouse={mouse} />
               </div>
 
-              <div className="relative z-10 flex flex-col items-center text-center">
+              <div className="hero-content relative z-10 flex flex-col items-center text-center">
                 <div className="relative mb-5">
                  {/* for profile photo div */}
                   <div
@@ -557,7 +557,7 @@ export default function App() {
                   </div>
                 </div>
 
-                <p className="text-[14px] font-mono tracking-widest uppercase mb-2" style={{ color: T.muted }}>
+                <p className="hero-eyebrow font-mono uppercase mb-2" style={{ color: T.muted }}>
                   Full Stack Developer | Software Engineer | Generative AI
                 </p>
                 <h1 className="text-3xl sm:text-5xl font-bold tracking-tight">
@@ -587,11 +587,11 @@ export default function App() {
             </section>
 
             {/* About & Philosophy */}
-            <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] gap-5">
-              <div className="space-y-5">
+            <div className="layout-grid grid grid-cols-1 md:grid-cols-[1.15fr_1fr]">
+              <div className="layout-stack">
               <section
                 onClick={() => playIosClickSound()}
-                className="click-active p-6 rounded-3xl border cursor-pointer"
+                className="section-card click-active border cursor-pointer"
                 style={{ backgroundColor: dark ? "#0a0a0c" : "#ffffff", borderColor: T.glassBorder }}
               >
                 <p className="text-[10px] font-mono mb-4 text-gray-500">01 — PHILOSOPHY</p>
@@ -602,10 +602,12 @@ export default function App() {
 
               <section
                 onClick={() => goTo("about")}
-                className="click-active p-6 rounded-3xl border cursor-pointer"
+                role="button" tabIndex={0}
+                onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); goTo("about"); } }}
+                className="section-card click-active border cursor-pointer"
                 style={bubble(T)}
               >
-                <div className="flex items-center justify-between mb-4">
+                <div className="section-heading">
                   <p className="text-[10px] font-mono" style={{ color: T.muted }}>02 — ABOUT</p>
                   <span className="text-[10px]" style={{ color: T.muted }}>Read the story →</span>
                 </div>
@@ -614,9 +616,9 @@ export default function App() {
                 </p>
               </section>
               </div>
-              <section className="app-builder-card relative flex flex-col p-6 rounded-[26px] overflow-hidden min-h-64">
+              <section className="section-card app-builder-card relative flex flex-col overflow-hidden">
                 <h2 className="relative text-[10px] font-mono tracking-wider">03 — APP BUILDER</h2>
-                <div className="relative flex items-start pt-5">
+                <div className="relative flex items-start pt-4">
                   <a href="https://appbuildersph.com/apps/chaindaan" target="_blank" rel="noopener noreferrer" aria-label="View ChainDaan on App Builders PH" className="app-builder-item relative flex w-full min-w-0 items-center gap-3 rounded-2xl px-4 py-3.5 overflow-hidden">
                     <img src={chaindaanLogo} alt="ChainDaan logo" className="relative w-10 h-10 shrink-0 rounded-xl border border-white/15 shadow-sm" />
                     <span className="relative flex min-w-0 flex-1 flex-col gap-1">
@@ -630,24 +632,24 @@ export default function App() {
             </div>
 
             {/* Experience */}
-            <section style={bubble(T)} className="p-6">
+            <section style={bubble(T)} className="section-card">
               <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>04 — EXPERIENCE</p>
               {EXPERIENCE.map((e, i) => (
                 <div key={i} onClick={() => playIosClickSound()} className="py-3 border-b last:border-none cursor-pointer click-active" style={{ borderColor: T.glassBorder }}>
-                  <div className="flex justify-between items-center mb-1">
+                  <div className="flex flex-wrap justify-between items-baseline gap-x-4 gap-y-1 mb-1">
                     <h3 className="text-xs sm:text-sm font-semibold">{e.role}</h3>
                     <span className="text-[10px] font-mono" style={{ color: T.muted }}>{e.period}</span>
                   </div>
                   <p className="text-xs font-medium text-blue-500 mb-1">{e.company}</p>
-                  <p className="text-xs font-light" style={{ color: T.muted }}>{e.desc}</p>
+                  <p className="text-xs font-light leading-relaxed" style={{ color: T.muted }}>{e.desc}</p>
                 </div>
               ))}
             </section>
 
             {/* Education & Certs */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <section style={bubble(T)} className="p-6">
-                <div className="flex items-center justify-between mb-4">
+            <div className="layout-grid grid grid-cols-1 md:grid-cols-2">
+              <section style={bubble(T)} className="section-card">
+                <div className="section-heading">
                   <p className="text-[10px] font-mono" style={{ color: T.muted }}>05 — EDUCATION</p>
                   <button onClick={() => goTo("education")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>See all →</button>
                 </div>
@@ -665,8 +667,8 @@ export default function App() {
                 </div>
               </section>
 
-              <section style={bubble(T)} className="p-6">
-                <div className="flex items-center justify-between mb-4">
+              <section style={bubble(T)} className="section-card">
+                <div className="section-heading">
                   <p className="text-[10px] font-mono" style={{ color: T.muted }}>06 — CERTIFICATES</p>
                   <button onClick={() => goTo("certifications")} className="text-[10px] hover:opacity-70 transition-opacity" style={{ color: T.muted }}>
                     View all →
@@ -686,8 +688,8 @@ export default function App() {
             </div>
 
             {/* Skills */}
-            <section style={bubble(T)} className="p-6">
-              <div className="flex items-center justify-between mb-4">
+            <section style={bubble(T)} className="section-card">
+              <div className="section-heading">
                 <p className="text-[10px] font-mono" style={{ color: T.muted }}>07 — SKILLS</p>
                 <button onClick={() => goTo("skills")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>View all →</button>
               </div>
@@ -697,8 +699,8 @@ export default function App() {
             </section>
 
             {/* Projects */}
-            <section id="projects" style={bubble(T)} className="p-6">
-              <div className="flex justify-between items-center mb-4">
+            <section id="projects" style={bubble(T)} className="section-card">
+              <div className="section-heading">
                 <p className="text-[10px] font-mono" style={{ color: T.muted }}>08 — PROJECTS</p>
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
@@ -729,7 +731,7 @@ export default function App() {
             </section>
 
             {/* Contact */}
-            <section id="contact" onClick={() => playIosClickSound()} className="p-8 rounded-3xl border text-center cursor-pointer click-active" style={bubble(T)}>
+            <section id="contact" onClick={() => playIosClickSound()} className="section-card contact-card text-center" style={bubble(T)}>
               <p className="text-[10px] font-mono mb-2" style={{ color: T.muted }}>09 — CONTACT</p>
               <h2 className="text-xl sm:text-2xl font-bold">Let's connect.</h2>
               <p className="text-xs mt-2 mb-5" style={{ color: T.muted }}>Open for software roles and projects.</p>
