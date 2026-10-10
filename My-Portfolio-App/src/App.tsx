@@ -5,6 +5,7 @@ import PremiumRobot from "./components/PremiumRobot";
 import PremiumDrone from "./components/PremiumDrone";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ProfilePhoto from "./components/ProfilePhoto";
+import ProjectPreview from "./components/ProjectPreview";
 
 type Page = "home" | "projects" | "certifications" | "about" | "education" | "skills";
 
@@ -41,11 +42,12 @@ function playIosClickSound() {
 function bubble(T: Theme, extra?: React.CSSProperties): React.CSSProperties {
   return {
     backgroundColor: T.glass,
+    backgroundImage: "linear-gradient(135deg, rgba(255,255,255,.075), transparent 45%, rgba(135,170,255,.025))",
     backdropFilter: "saturate(180%) blur(30px)",
     WebkitBackdropFilter: "saturate(180%) blur(30px)",
     border: `1px solid ${T.glassBorder}`,
     borderRadius: 26,
-    boxShadow: "0 18px 70px rgba(0,0,0,.10)",
+    boxShadow: "inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(255,255,255,.025), 0 16px 48px rgba(0,0,0,.12)",
     ...extra,
   };
 }
@@ -198,44 +200,6 @@ function Magnetic({ as: Tag = "a", className, style, children, strength = 14, ..
 // ---------------------------------------------------------------------------
 // Project card with a soft cursor-tracked Siri-tinted spotlight on hover
 // ---------------------------------------------------------------------------
-function ProjectCard({ p, T }: { p: { id: number; title: string; desc: string; tags: string[] }; T: Theme }) {
-  const [pos, setPos] = useState({ x: 50, y: 50 });
-  const [hovering, setHovering] = useState(false);
-
-  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setPos({ x: ((e.clientX - rect.left) / rect.width) * 100, y: ((e.clientY - rect.top) / rect.height) * 100 });
-  };
-
-  return (
-    <div
-      onMouseMove={onMove}
-      onMouseEnter={() => setHovering(true)}
-      onMouseLeave={() => setHovering(false)}
-      onClick={() => playIosClickSound()}
-      className="relative p-4 rounded-2xl border cursor-pointer click-active overflow-hidden transition-transform duration-200"
-      style={{ borderColor: T.glassBorder, transform: hovering ? "translateY(-2px)" : "translateY(0)" }}
-    >
-      <div
-        className="pointer-events-none absolute inset-0 transition-opacity duration-300"
-        style={{
-          opacity: hovering ? 1 : 0,
-          background: `radial-gradient(220px circle at ${pos.x}% ${pos.y}%, rgba(191,90,242,0.16), rgba(10,132,255,0.10) 40%, transparent 70%)`,
-        }}
-      />
-      <div className="relative">
-        <h3 className="text-xs sm:text-sm font-semibold mb-1">{p.title}</h3>
-        <p className="text-xs font-light mb-2" style={{ color: T.muted }}>{p.desc}</p>
-        <div className="flex gap-1.5">
-          {p.tags.map((t) => (
-            <span key={t} className="px-2 py-0.5 text-[9px] font-mono rounded bg-white/5 text-gray-400">{t}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 // ---------------------------------------------------------------------------
 // Education mark — an original monoline emblem (white strokes only), NOT a
 // reproduction of any institution's official seal/logo. Swap in the real
@@ -289,11 +253,14 @@ function CustomTechIcon({ kind, active }: { kind: "sql" | "nosql"; active: boole
 
 function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean }) {
   const [hover, setHover] = useState(false);
+  const [failed, setFailed] = useState(false);
   const needsInvert = dark && skill.invertOnDark;
   const iconFilter = [
     needsInvert ? "invert(1)" : "",
     hover ? "grayscale(0) opacity(1)" : "grayscale(1) opacity(0.7)",
   ].filter(Boolean).join(" ");
+
+  if (!skill.src || failed) return <span className="glass-chip skill-text" style={{ color: T.text, borderColor: T.glassBorder }}>{skill.name}</span>;
 
   return (
     <div
@@ -318,6 +285,7 @@ function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean 
         ) : skill.src ? (
           <img
             src={skill.src}
+            onError={() => setFailed(true)}
             alt={skill.name}
             width={24}
             height={24}
@@ -347,7 +315,7 @@ function AllProjectsPage({ T }: { T: Theme }) {
         <section key={y} style={bubble(T)} className="p-6">
           <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>{y}</p>
           <div className="space-y-3">
-            {(PROJECTS[y] ?? []).map((p) => <ProjectCard key={p.id} p={p} T={T} />)}
+            {(PROJECTS[y] ?? []).map((p) => <ProjectPreview key={p.id} project={p} T={T} />)}
           </div>
         </section>
       ))}
@@ -383,7 +351,7 @@ function CertificateModal({ certificate, T, onClose }: { certificate: Certificat
     };
   }, []);
   return (
-    <dialog ref={dialogRef} aria-labelledby="certificate-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} className="m-auto w-[calc(100%-2rem)] max-w-4xl max-h-[90dvh] overflow-y-auto rounded-3xl p-0 backdrop:bg-black/70 backdrop:backdrop-blur-sm" style={{ background: T.bg, color: T.text, border: `1px solid ${T.glassBorder}` }}>
+    <dialog ref={dialogRef} aria-labelledby="certificate-title" onCancel={onClose} onClick={(event) => { if (event.target === event.currentTarget) onClose(); }} className="premium-modal" style={{ backgroundColor: T.bg, color: T.text, borderColor: T.glassBorder }}>
       <div className="relative grid md:grid-cols-[1.2fr_1fr]">
         <button autoFocus onClick={onClose} aria-label="Close certificate" className="absolute right-3 top-3 z-10 rounded-full w-9 h-9 text-xl" style={{ background: T.bg, border: `1px solid ${T.glassBorder}` }}>×</button>
         <div className="min-h-60 md:min-h-96 p-5 flex items-center justify-center"><CertificateImage certificate={certificate} T={T} /></div>
@@ -413,7 +381,7 @@ function AllSkillsPage({ T, dark }: { T: Theme; dark: boolean }) {
   return <div className="space-y-6">
     <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>SKILL SET</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">What I build with.</h2></div>
     <div className="grid sm:grid-cols-2 gap-5">{SKILL_GROUPS.map((group) => <section key={group.name} style={bubble(T)} className="p-6">
-      <h3 className="text-sm font-semibold mb-5">{group.name}</h3><div className="flex flex-wrap gap-x-5 gap-y-6">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} dark={dark} />)}</div>
+      <h3 className="text-sm font-semibold mb-5">{group.name}</h3><div className="flex flex-wrap items-center gap-3">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} dark={dark} />)}</div>
     </section>)}</div>
   </div>;
 }
@@ -823,7 +791,7 @@ export default function App() {
               </div>
 
               <div className="space-y-3">
-                {projects.map((p) => <ProjectCard key={p.id} p={p} T={T} />)}
+                {projects.map((p) => <ProjectPreview key={p.id} project={p} T={T} />)}
               </div>
             </section>
 

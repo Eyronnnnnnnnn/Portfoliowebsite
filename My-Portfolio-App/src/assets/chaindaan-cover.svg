@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#213c4b"/><stop offset="1" stop-color="#080c14"/></linearGradient><linearGradient id="line" x2="1" y2="1"><stop stop-color="#7ce2d0"/><stop offset="1" stop-color="#729cff"/></linearGradient></defs>
+<rect width="1200" height="900" fill="url(#bg)"/>
+<g fill="none" stroke="#ffffff" stroke-opacity=".06"><path d="M0 150h1200M0 300h1200M0 450h1200M0 600h1200M0 750h1200M150 0v900M300 0v900M450 0v900M600 0v900M750 0v900M900 0v900M1050 0v900"/><rect x="40" y="40" width="1120" height="820" rx="30"/></g>
+<g fill="none" stroke="url(#line)" stroke-width="20" transform="translate(455 235) rotate(-35 145 90)"><rect width="180" height="110" rx="55"/><rect x="110" y="65" width="180" height="110" rx="55"/></g>
+<text x="600" y="530" text-anchor="middle" fill="#f0f7fa" font-family="Arial, sans-serif" font-size="78" font-weight="700" letter-spacing="-3">Chaindaan</text><text x="600" y="586" text-anchor="middle" fill="#9db5c5" font-family="Arial, sans-serif" font-size="19" letter-spacing="5">FULL STACK DEVELOPMENT</text>
+<rect x="481" y="644" width="238" height="43" rx="21" fill="#ffffff" fill-opacity=".04" stroke="#ffffff" stroke-opacity=".13"/><circle cx="508" cy="665" r="4" fill="#7ce2d0"/><text x="610" y="671" text-anchor="middle" fill="#c9d9e1" font-family="Arial, sans-serif" font-size="15" letter-spacing="2">IN DEVELOPMENT</text>
+<text x="80" y="813" fill="#8da4b6" font-family="Arial, sans-serif" font-size="15" letter-spacing="2">ACADEMIC PROJECT</text><text x="1120" y="813" text-anchor="end" fill="#8da4b6" font-family="Arial, sans-serif" font-size="15">2026</text></svg>

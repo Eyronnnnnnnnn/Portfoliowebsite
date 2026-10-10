@@ -1,14 +1,20 @@
 ﻿export const GITHUB_USERNAME = "Eyronnnnnnnnn";
 export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
+import chaindaanCover from "../assets/chaindaan-cover.svg";
 export const YEARS = [2026, 2025, 2024];
 const DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
-export const PROJECTS: Record<number, { id: number; title: string; desc: string; tags: string[] }[]> = {
+export type Project = { id: number; title: string; desc: string; tags: string[]; image: string; role?: string; details?: string; status?: string };
+export const PROJECTS: Record<number, Project[]> = {
 2026: [
   {
     id: 1,
     title: "Chaindaan",
     desc: "An ongoing academic project where I apply and develop my software development skills as a BSIT student.",
-    tags: [  "React.js","Node.js","Express.js","MongoDb","Cloudinary","Socket Io", "Software Engineering",  "In Development"],
+    image: chaindaanCover,
+    role: "Full Stack Developer (Solo Developer)",
+    details: "Driving the full-stack development of Chain-Daan as the solo developer in a five-member BSIT team, translating project requirements into an integrated application across the frontend and backend.",
+    status: "In Development",
+    tags: ["React.js", "Node.js", "Express.js", "MongoDB", "Cloudinary", "Socket.IO"],
   },
 ],
 };
