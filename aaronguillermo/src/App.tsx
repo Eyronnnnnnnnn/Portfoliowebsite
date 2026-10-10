@@ -349,20 +349,20 @@ function AboutStoryPage({ T }: { T: Theme }) {
     <div className="layout-stack">
       <div>
         <p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>THE STORY</p>
-        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">How I got here.</h2>
+        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Learning, one project at a time.</h2>
       </div>
       <section style={bubble(T)} className="section-card space-y-4">
         <p className="text-[10px] font-mono" style={{ color: T.muted }}>
-          Placeholder copy below — swap in your real story.
+          BSIT STUDENT · ILOCOS NORTE
         </p>
         <p className="text-sm font-light leading-relaxed" style={{ color: T.text }}>
-          It started with a broken laptop and too much curiosity. I taught myself HTML and CSS by rebuilding pages I liked, one tag at a time, before I ever wrote a line of JavaScript on purpose.
+          I’m Aaron, a third-year Bachelor of Science in Information Technology student at Mariano Marcos State University, based in Ilocos Norte. I’m interested in full-stack development and generative AI, and I’m still learning how to turn ideas into useful applications.
         </p>
         <p className="text-sm font-light leading-relaxed" style={{ color: T.text }}>
-          School — Mariano Marcos State University — shaped how I think about building things: slow down, get the fundamentals right, then move fast. That habit followed me into Manila, where I traded textbooks for production bugs and learned more in six months of shipping than in years of tutorials.
+          Through coursework and student projects like ChainDaan, I get to put what I learn into practice—from building interfaces to connecting APIs and working with databases. Each project helps me understand the things I need to improve and gives me a chance to try again.
         </p>
         <p className="text-sm font-light leading-relaxed" style={{ color: T.text }}>
-          Today I build full-stack products — React and Next.js on the front, Node and databases underneath — and I still get the same rush from a clean deploy that I did from my first working "Hello World."
+          Right now, I’m focused on strengthening my programming fundamentals, exploring AI-powered features, and becoming a better teammate and developer. I’m looking forward to learning from other people and gaining more hands-on experience as I continue my studies.
         </p>
         <p className="text-xs font-mono" style={{ color: T.muted }}>— Aaron</p>
       </section>
@@ -612,7 +612,7 @@ export default function App() {
                   <span className="text-[10px]" style={{ color: T.muted }}>Read the story →</span>
                 </div>
                 <p className="text-xs sm:text-sm font-light leading-relaxed" style={{ color: T.text }}>
-                 Third-year BSIT student at Mariano Marcos State University (Ilocos Norte), with a strong interest in full-stack development and generative AI. Focused on building practical web applications, creating intuitive user experiences, and exploring AI-powered solutions.
+                 I’m a third-year BSIT student at Mariano Marcos State University, based in Ilocos Norte. I’m learning full-stack development and exploring generative AI through coursework and student projects. Still learning, building, and improving one project at a time.
                 </p>
               </section>
               </div>
