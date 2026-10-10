@@ -7,6 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import ProfilePhoto from "./components/ProfilePhoto";
 import ProjectPreview from "./components/ProjectPreview";
 import mmsuLogo from "./assets/photos/Education-logo/Teal Mariano Marcos State University Seal.png";
+import chaindaanLogo from "./assets/photos/ChainDaan-logo/chaindaan.logo.png";
 
 type Page = "home" | "projects" | "certifications" | "about" | "education" | "skills";
 
@@ -226,72 +227,7 @@ function EduMark({ variant }: { variant: "mmsu" | "generic" }) {
 // monoline icons for the generic "SQL" / "NoSQL" categories. Grayscale at
 // rest, full color on hover — a minimalist grid that still reads clearly.
 // ---------------------------------------------------------------------------
-function CustomTechIcon({ kind, active }: { kind: "sql" | "nosql"; active: boolean }) {
-  const color = active ? (kind === "sql" ? "#0A84FF" : "#30D5C8") : "#9a9aa2";
-  return kind === "sql" ? (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <ellipse cx="12" cy="5" rx="8" ry="3" />
-      <path d="M4 5v6c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
-      <path d="M4 11v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6" />
-    </svg>
-  ) : (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="4" y="4" width="7" height="7" rx="1.5" />
-      <rect x="13" y="4" width="7" height="7" rx="1.5" />
-      <rect x="4" y="13" width="7" height="7" rx="1.5" />
-      <rect x="13" y="13" width="7" height="7" rx="1.5" />
-    </svg>
-  );
-}
-
-function SkillBadge({ skill, T, dark, showCustomIcon = false }: { skill: Skill; T: Theme; dark: boolean; showCustomIcon?: boolean }) {
-  const [hover, setHover] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const needsInvert = dark && skill.invertOnDark;
-  const iconFilter = [
-    needsInvert ? "invert(1)" : "",
-    hover ? "grayscale(0) opacity(1)" : "grayscale(1) opacity(0.7)",
-  ].filter(Boolean).join(" ");
-
-  if ((!skill.src && !(showCustomIcon && skill.custom)) || failed) return <span className="glass-chip skill-text" style={{ color: T.text, borderColor: T.glassBorder }}>{skill.name}</span>;
-
-  return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onClick={() => playIosClickSound()}
-      className="click-active flex flex-col items-center gap-1.5 w-16 cursor-pointer"
-    >
-      <div
-        className="w-11 h-11 rounded-2xl flex items-center justify-center transition-all duration-300"
-        style={{
-          background: T.glass,
-          backdropFilter: "blur(14px) saturate(160%)",
-          WebkitBackdropFilter: "blur(14px) saturate(160%)",
-          border: `1px solid ${T.glassBorder}`,
-          boxShadow: hover ? "0 8px 24px rgba(191,90,242,0.28), 0 0 0 1px rgba(191,90,242,0.25)" : "0 4px 14px rgba(0,0,0,0.10)",
-          transform: hover ? "translateY(-3px) scale(1.06)" : "translateY(0) scale(1)",
-        }}
-      >
-        {skill.custom ? (
-          <CustomTechIcon kind={skill.custom} active={hover} />
-        ) : skill.src ? (
-          <img
-            src={skill.src}
-            onError={() => setFailed(true)}
-            alt={skill.name}
-            width={24}
-            height={24}
-            style={{ filter: iconFilter, transition: "filter 0.3s ease" }}
-          />
-        ) : (
-          <span className="text-xs font-semibold" style={{ color: T.accent }} aria-hidden="true">{skill.name.split(" ").map((word) => word[0]).slice(0, 2).join("")}</span>
-        )}
-      </div>
-      <span className="text-[9px] font-mono text-center leading-tight" style={{ color: T.muted }}>{skill.name}</span>
-    </div>
-  );
-}
+function SkillBadge({ skill, T }: { skill: Skill; T: Theme }) { return <span className="glass-chip skill-text" style={{ color: T.text, borderColor: T.glassBorder }}>{skill.name}</span>; }
 
 // ---------------------------------------------------------------------------
 // "Another page" sub-views — pushed in over the home content, with a Back
@@ -370,11 +306,11 @@ function AllEducationPage({ T }: { T: Theme }) {
   </div>;
 }
 
-function AllSkillsPage({ T, dark }: { T: Theme; dark: boolean }) {
+function AllSkillsPage({ T }: { T: Theme }) {
   return <div className="space-y-6">
     <div><p className="text-[10px] font-mono mb-1" style={{ color: T.muted }}>SKILL SET</p><h2 className="text-2xl sm:text-3xl font-bold tracking-tight">What I build with.</h2></div>
-    <div className="grid sm:grid-cols-2 gap-5">{SKILL_GROUPS.map((group) => <section key={group.name} style={bubble(T)} className="p-6">
-      <h3 className="text-sm font-semibold mb-5">{group.name}</h3><div className="flex flex-wrap items-center gap-3">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} dark={dark} />)}</div>
+    <div style={bubble(T)} className="px-5 sm:px-6 py-2">{SKILL_GROUPS.map((group) => <section key={group.name} className="grid sm:grid-cols-[145px_1fr] gap-3 py-4 border-b last:border-0" style={{ borderColor: T.glassBorder }}>
+      <h3 className="text-xs font-medium pt-1" style={{ color: T.muted }}>{group.name}</h3><div className="flex flex-wrap items-center gap-1.5">{group.skills.map((skill) => <SkillBadge key={skill.name} skill={skill} T={T} />)}</div>
     </section>)}</div>
   </div>;
 }
@@ -584,7 +520,7 @@ export default function App() {
         {page === "certifications" && <AllCertificationsPage T={T} />}
         {page === "about" && <AboutStoryPage T={T} />}
         {page === "education" && <AllEducationPage T={T} />}
-        {page === "skills" && <AllSkillsPage T={T} dark={dark} />}
+        {page === "skills" && <AllSkillsPage T={T} />}
 
         {page === "home" && (
           <>
@@ -662,13 +598,14 @@ export default function App() {
             </section>
 
             {/* About & Philosophy */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] gap-5">
+              <div className="space-y-5">
               <section
                 onClick={() => playIosClickSound()}
                 className="click-active p-6 rounded-3xl border cursor-pointer"
                 style={{ backgroundColor: dark ? "#0a0a0c" : "#ffffff", borderColor: T.glassBorder }}
               >
-                <p className="text-[10px] font-mono mb-4 text-gray-500">00 — PHILOSOPHY</p>
+                <p className="text-[10px] font-mono mb-4 text-gray-500">01 — PHILOSOPHY</p>
                 <blockquote className="text-base sm:text-lg font-light leading-snug">
                   "Simplicity is about subtracting the obvious and adding the meaningful."
                 </blockquote>
@@ -680,18 +617,26 @@ export default function App() {
                 style={bubble(T)}
               >
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>01 — ABOUT</p>
+                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>02 — ABOUT</p>
                   <span className="text-[10px]" style={{ color: T.muted }}>Read the story →</span>
                 </div>
                 <p className="text-xs sm:text-sm font-light leading-relaxed" style={{ color: T.text }}>
                  Third-year BSIT student at Mariano Marcos State University (Ilocos Norte), with a strong interest in full-stack development and generative AI. Focused on building practical web applications, creating intuitive user experiences, and exploring AI-powered solutions.
                 </p>
               </section>
+              </div>
+              <a href="https://appbuildersph.com/apps/chaindaan" target="_blank" rel="noopener noreferrer" aria-label="View ChainDaan on App Builders PH" className="app-builder-card group relative flex flex-col p-6 rounded-[26px] overflow-hidden min-h-64">
+                <span className="relative flex items-center justify-between text-[10px] font-mono tracking-wider"><span>03 — APP BUILDER</span><span aria-hidden="true" className="text-lg">↗</span></span>
+                <span className="relative flex flex-1 flex-col justify-center items-center gap-5 py-8">
+                  <img src={chaindaanLogo} alt="ChainDaan logo" className="w-20 h-20 rounded-[22px] border border-white/60 shadow-[0_12px_30px_#154c3526]" />
+                  <span className="text-2xl font-semibold tracking-tight">ChainDaan</span>
+                </span>
+              </a>
             </div>
 
             {/* Experience */}
             <section style={bubble(T)} className="p-6">
-              <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>02 — EXPERIENCE</p>
+              <p className="text-[10px] font-mono mb-4" style={{ color: T.muted }}>04 — EXPERIENCE</p>
               {EXPERIENCE.map((e, i) => (
                 <div key={i} onClick={() => playIosClickSound()} className="py-3 border-b last:border-none cursor-pointer click-active" style={{ borderColor: T.glassBorder }}>
                   <div className="flex justify-between items-center mb-1">
@@ -708,7 +653,7 @@ export default function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <section style={bubble(T)} className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>03 — EDUCATION</p>
+                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>05 — EDUCATION</p>
                   <button onClick={() => goTo("education")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>See all →</button>
                 </div>
                 <div className="space-y-4">
@@ -727,7 +672,7 @@ export default function App() {
 
               <section style={bubble(T)} className="p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>04 — CERTIFICATES</p>
+                  <p className="text-[10px] font-mono" style={{ color: T.muted }}>06 — CERTIFICATES</p>
                   <button onClick={() => goTo("certifications")} className="text-[10px] hover:opacity-70 transition-opacity" style={{ color: T.muted }}>
                     View all →
                   </button>
@@ -748,18 +693,18 @@ export default function App() {
             {/* Skills */}
             <section style={bubble(T)} className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <p className="text-[10px] font-mono" style={{ color: T.muted }}>05 — SKILLS</p>
+                <p className="text-[10px] font-mono" style={{ color: T.muted }}>07 — SKILLS</p>
                 <button onClick={() => goTo("skills")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>View all →</button>
               </div>
-              <div className="flex flex-wrap gap-4 justify-center">
-                {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} dark={dark} showCustomIcon />)}
+              <div className="flex flex-wrap gap-1.5">
+                {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} />)}
               </div>
             </section>
 
             {/* Projects */}
             <section id="projects" style={bubble(T)} className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <p className="text-[10px] font-mono" style={{ color: T.muted }}>06 — PROJECTS</p>
+                <p className="text-[10px] font-mono" style={{ color: T.muted }}>08 — PROJECTS</p>
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1">
                     {YEARS.map((y) => (
@@ -790,7 +735,7 @@ export default function App() {
 
             {/* Contact */}
             <section id="contact" onClick={() => playIosClickSound()} className="p-8 rounded-3xl border text-center cursor-pointer click-active" style={bubble(T)}>
-              <p className="text-[10px] font-mono mb-2" style={{ color: T.muted }}>07 — CONTACT</p>
+              <p className="text-[10px] font-mono mb-2" style={{ color: T.muted }}>09 — CONTACT</p>
               <h2 className="text-xl sm:text-2xl font-bold">Let's connect.</h2>
               <p className="text-xs mt-2 mb-5" style={{ color: T.muted }}>Open for software roles and projects.</p>
               <a href="mailto:aarondev@gmail.com" className="inline-block px-6 py-2.5 rounded-full text-xs font-medium text-white" style={{ backgroundColor: T.accent }}>

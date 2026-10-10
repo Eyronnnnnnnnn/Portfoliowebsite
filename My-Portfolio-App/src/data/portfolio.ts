@@ -84,7 +84,7 @@ export const SKILL_GROUPS: { name: string; skills: Skill[] }[] = [
   { name: "Backend", skills: SKILLS.filter((s) => ["Java", "Node.js", "Express.js"].includes(s.name)) },
   { name: "Databases", skills: SKILLS.filter((s) => ["SQL", "NoSQL", "MongoDB"].includes(s.name)) },
   { name: "Software Engineering", skills: ["Agile", "Scrum", "System Design", "System Architecture"].map((name) => ({ name })) },
-  { name: "AI", skills: ["Codex", "Claude (Anthropic)", "Generative AI"].map((name) => ({ name })) },
+  { name: "AI Tools", skills: ["Codex", "Claude (Anthropic)", "Generative AI"].map((name) => ({ name })) },
   { name: "Deployment Platforms", skills: [{ name: "Vercel" }, { name: "Render" }, ...SKILLS.filter((s) => s.name === "Docker")] },
   { name: "Tools", skills: [...SKILLS.filter((s) => ["Git", "GitHub", "VS Code"].includes(s.name)), { name: "Figma", src: `${DEVICON_BASE}/figma/figma-original.svg` }] },
 ];
