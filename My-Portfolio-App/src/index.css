@@ -40,8 +40,9 @@ button:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid 
 section[id] { scroll-margin-top: 24px; }
 .glass-chip { display: inline-flex; align-items: center; max-width: 100%; padding: 6px 10px; border: 1px solid; border-radius: 9px; background: linear-gradient(135deg, #ffffff0c, #ffffff03); box-shadow: inset 0 1px 0 #ffffff0a; font-size: 10px; line-height: 1.5; }
 .skill-text { padding: 5px 9px; border-radius: 7px; font-size: 10px; font-weight: 400; }
-.app-builder-card { color: #214d3d; background: radial-gradient(ellipse at 15% 0%, #ffffffb3, transparent 65%), linear-gradient(145deg, #e0f5e7, #c0dfcc); border: 1px solid #edfff2b3; box-shadow: inset 0 1px 0 #ffffffd9, inset 0 -1px 0 #93bfa280, 0 16px 48px #00000014; transition: transform .25s ease, box-shadow .25s ease; }
-.app-builder-card:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff, 0 20px 50px #77bb9226; }
+.app-builder-card { color: #ecfdf5; background: #047857; border: 1px solid #6ee7b74d; box-shadow: inset 0 1px 0 #ffffff26, inset 0 -1px 0 #022c2233, 0 16px 48px #00000014; transition: transform .25s ease, box-shadow .25s ease; }
+.app-builder-card:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff33, 0 20px 50px #022c2233; }
+.app-builder-item { background: #064e3b; border: 1px solid #6ee7b726; box-shadow: inset 0 1px 0 #ffffff0d, 0 6px 18px #022c2226; }
 .project-preview { background: linear-gradient(135deg, #ffffff06, #ffffff02); box-shadow: inset 0 1px 0 #ffffff0b; transition: border-color .25s, box-shadow .25s, transform .25s; cursor: pointer; }
 .project-preview:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 #ffffff20, 0 14px 40px #0002; }
 .premium-modal { margin: auto; padding: 0; width: calc(100% - 32px); max-width: 1040px; max-height: 90dvh; overflow-y: auto; border: 1px solid; border-radius: 28px; background-image: linear-gradient(135deg, #ffffff10, #ffffff03 50%, #739cfa09); box-shadow: inset 0 1px 0 #ffffff26, 0 40px 120px #0008; backdrop-filter: blur(40px) saturate(150%); -webkit-backdrop-filter: blur(40px) saturate(150%); }
