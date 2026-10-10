@@ -6,6 +6,7 @@ import PremiumDrone from "./components/PremiumDrone";
 import { useEffect, useMemo, useRef, useState } from "react";
 import ProfilePhoto from "./components/ProfilePhoto";
 import ProjectPreview from "./components/ProjectPreview";
+import mmsuLogo from "./assets/photos/Education-logo/Teal Mariano Marcos State University Seal.png";
 
 type Page = "home" | "projects" | "certifications" | "about" | "education" | "skills";
 
@@ -206,24 +207,16 @@ function Magnetic({ as: Tag = "a", className, style, children, strength = 14, ..
 // crest asset yourself if you have the rights to use it.
 // ---------------------------------------------------------------------------
 function EduMark({ variant }: { variant: "mmsu" | "generic" }) {
+  if (variant === "mmsu") return <img src={mmsuLogo} alt="Mariano Marcos State University seal" className="w-11 h-11 object-contain shrink-0" />;
   return (
     <div
       className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
       style={{ background: "linear-gradient(135deg, #1c1c1f, #0a0a0c)", border: "1px solid rgba(255,255,255,0.14)" }}
     >
-      {variant === "mmsu" ? (
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 2l8 4-8 4-8-4 8-4Z" />
-          <path d="M6 9.5V15c0 1.5 2.5 3 6 3s6-1.5 6-3V9.5" />
-          <path d="M20 6v6" />
-          <circle cx="20" cy="13.4" r="0.8" fill="#fff" stroke="none" />
-        </svg>
-      ) : (
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
           <path d="M22 10 12 5 2 10l10 5 10-5Z" />
           <path d="M6 12v5c0 1.5 2.5 3 6 3s6-1.5 6-3v-5" />
         </svg>
-      )}
     </div>
   );
 }
@@ -251,7 +244,7 @@ function CustomTechIcon({ kind, active }: { kind: "sql" | "nosql"; active: boole
   );
 }
 
-function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean }) {
+function SkillBadge({ skill, T, dark, showCustomIcon = false }: { skill: Skill; T: Theme; dark: boolean; showCustomIcon?: boolean }) {
   const [hover, setHover] = useState(false);
   const [failed, setFailed] = useState(false);
   const needsInvert = dark && skill.invertOnDark;
@@ -260,7 +253,7 @@ function SkillBadge({ skill, T, dark }: { skill: Skill; T: Theme; dark: boolean 
     hover ? "grayscale(0) opacity(1)" : "grayscale(1) opacity(0.7)",
   ].filter(Boolean).join(" ");
 
-  if (!skill.src || failed) return <span className="glass-chip skill-text" style={{ color: T.text, borderColor: T.glassBorder }}>{skill.name}</span>;
+  if ((!skill.src && !(showCustomIcon && skill.custom)) || failed) return <span className="glass-chip skill-text" style={{ color: T.text, borderColor: T.glassBorder }}>{skill.name}</span>;
 
   return (
     <div
@@ -759,7 +752,7 @@ export default function App() {
                 <button onClick={() => goTo("skills")} className="text-[10px] hover:opacity-70" style={{ color: T.muted }}>View all →</button>
               </div>
               <div className="flex flex-wrap gap-4 justify-center">
-                {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} dark={dark} />)}
+                {SKILLS.map((s) => <SkillBadge key={s.name} skill={s} T={T} dark={dark} showCustomIcon />)}
               </div>
             </section>
 
@@ -791,7 +784,7 @@ export default function App() {
               </div>
 
               <div className="space-y-3">
-                {projects.map((p) => <ProjectPreview key={p.id} project={p} T={T} />)}
+                {projects.map((p) => <ProjectPreview key={p.id} project={p} T={T} compact onExplore={() => goTo("projects")} />)}
               </div>
             </section>
 

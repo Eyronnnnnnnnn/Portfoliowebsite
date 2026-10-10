@@ -1,9 +1,10 @@
 ﻿export const GITHUB_USERNAME = "Eyronnnnnnnnn";
 export const GITHUB_URL = `https://github.com/${GITHUB_USERNAME}`;
 import chaindaanCover from "../assets/chaindaan-cover.svg";
+import chaindaanLogo from "../assets/photos/ChainDaan-logo/chaindaan.logo.png";
 export const YEARS = [2026, 2025, 2024];
 const DEVICON_BASE = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
-export type Project = { id: number; title: string; desc: string; tags: string[]; image: string; role?: string; details?: string; status?: string };
+export type Project = { id: number; title: string; desc: string; tags: string[]; image: string; icon?: string; role?: string; details?: string; status?: string };
 export const PROJECTS: Record<number, Project[]> = {
 2026: [
   {
@@ -11,6 +12,7 @@ export const PROJECTS: Record<number, Project[]> = {
     title: "Chaindaan",
     desc: "An ongoing academic project where I apply and develop my software development skills as a BSIT student.",
     image: chaindaanCover,
+    icon: chaindaanLogo,
     role: "Full Stack Developer (Solo Developer)",
     details: "Driving the full-stack development of Chain-Daan as the solo developer in a five-member BSIT team, translating project requirements into an integrated application across the frontend and backend.",
     status: "In Development",
@@ -31,10 +33,10 @@ export const EXPERIENCE = [
 // NOTE: placeholder degree/period for MMSU — update with your actual program and dates.
 export const EDUCATION = [
   { degree: "Bachelor of Science in Information Technology", school: "Mariano Marcos State University", period: "Graduating in 2028", note: "1st Year College Schoolar", logo: "mmsu" as const },
-  { degree: "(STEM)Science Technology Engineering and Mathemathics", school: "Catagtaguen National Highschool", period: "Graduated 2024", note: "Honor Student", logo: "mmsu" as const },
-  { degree: "Junior Highschool", school: "Catagtaguen National Highschool", period: "Graduated 2022", note: "", logo: "mmsu" as const },
-  { degree: "Elementary", school: "Macayepyep Elementary school", period: "Grade 6", note: "Grade 6 Graduated", logo: "mmsu" as const },
-  { degree: "Elementary", school: "R and O Academy", period: "Grade 1-5", note: "", logo: "mmsu" as const },
+  { degree: "(STEM)Science Technology Engineering and Mathemathics", school: "Catagtaguen National Highschool", period: "Graduated 2024", note: "Honor Student", logo: "generic" as const },
+  { degree: "Junior Highschool", school: "Catagtaguen National Highschool", period: "Graduated 2022", note: "", logo: "generic" as const },
+  { degree: "Elementary", school: "Macayepyep Elementary school", period: "Grade 6", note: "Grade 6 Graduated", logo: "generic" as const },
+  { degree: "Elementary", school: "R and O Academy", period: "Grade 1-5", note: "", logo: "generic" as const },
 ];
 
 export type Certificate = { name: string; issuer: string; year: string; color: string; desc: string; image?: string };

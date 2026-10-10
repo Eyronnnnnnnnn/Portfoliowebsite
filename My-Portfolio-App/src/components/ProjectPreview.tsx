@@ -33,8 +33,19 @@ function ProjectModal({ project, T, onClose }: { project: Project; T: Theme; onC
   </dialog>, document.body);
 }
 
-export default function ProjectPreview({ project, T }: { project: Project; T: Theme }) {
+export default function ProjectPreview({ project, T, compact = false, onExplore }: { project: Project; T: Theme; compact?: boolean; onExplore?: () => void }) {
   const [open, setOpen] = useState(false);
+  if (compact) return <button onClick={onExplore} aria-label={`View ${project.title} in all projects`} className="project-preview flex w-full items-start gap-4 rounded-2xl border p-4 sm:p-5 text-left" style={{ borderColor: T.glassBorder, color: T.text }}>
+    <span className="relative block w-14 h-14 sm:w-16 sm:h-16 shrink-0 overflow-hidden rounded-2xl border shadow-lg" style={{ borderColor: T.glassBorder, background: T.glass }}>
+      {project.icon ? <img src={project.icon} alt={`${project.title} app icon`} className="h-full w-full object-cover" /> : <span className="flex h-full items-center justify-center text-xl font-semibold">{project.title[0]}</span>}
+      <span className="pointer-events-none absolute inset-0 rounded-2xl" style={{ boxShadow: "inset 0 1px 1px #ffffff40" }} />
+    </span>
+    <span className="flex min-w-0 flex-1 flex-col gap-2">
+      <span className="flex flex-wrap items-center justify-between gap-2"><span className="text-sm font-semibold">{project.title}</span><span className="text-[9px] font-mono" style={{ color: T.accent }}>{project.status}</span></span>
+      <span className="text-xs leading-relaxed" style={{ color: T.muted }}>{project.desc}</span>
+      <span className="flex flex-wrap gap-1.5">{project.tags.map((tag) => <span key={tag} className="glass-chip" style={{ borderColor: T.glassBorder }}>{tag}</span>)}</span>
+    </span>
+  </button>;
   return <>
     <button onClick={() => setOpen(true)} aria-label={`View ${project.title} project`} className="project-preview group w-full text-left grid sm:grid-cols-[.85fr_1.15fr] overflow-hidden rounded-2xl border" style={{ borderColor: T.glassBorder, color: T.text }}>
       <span className="block overflow-hidden aspect-[4/3]"><ProjectImage project={project} /></span>
